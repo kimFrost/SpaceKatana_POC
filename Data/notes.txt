@@ -1,0 +1,46 @@
+Module->onConstruction() {
+	if (module.connectTo1) {
+		connector->join(module.connectTo1, true, true);
+	}
+}
+
+
+function join(connectTo, bUpdateTransform, bUpdateOther) {
+	if (connectTo) {
+		if (this.OtherConnector !== connectTo) {
+		
+		
+			if (bUpdateOther) {
+				connectTo.join(self, false, false);
+				//connectTo.OtherConnector = this:
+			}
+			if (bUpdateTransform) {
+				//Attach to ?? (core?? Actor Module)
+				// Attach to module 1 step closer to core. Like a three structure
+			}
+		}
+	}
+}
+
+
+
+Notes:
+Updates all modules though all connectors (flood fill)
+
+
+Core is the parent module that all other modules are attached to. Then de attach when not connected
+(Cons: On detach all modules won't be attached to anything. Have to flood fill and atttach all from detach point)
+OR
+Use three branch structure with core being the base and then have children with children 
+(Cons: A module can have multiple routes to the core)
+
+
+
+
+
+
+
+
+
+
+Simple mechanics, complex interactions between mechanics
