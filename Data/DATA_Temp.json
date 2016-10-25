@@ -1,0 +1,38 @@
+[
+	{
+		"Name": "FishingStation",
+		"Id": "FishingStation",
+		"Title": "Fishing station",
+		"Description": "A place to fish in the sea",
+		"Task": "(Title=\"Fishing\",
+			WorkTime=10,
+			Outcomes=(
+				(Title=\"Heavy Failure\", Description=\"%FIRSTNAME% broke the fishing rig.\",ChanceRangeFrom=0.0, ChanceRangeTo=0.05, Target=Person, ActionType=BreakStation, ActionAmount=1.0, Rating=UtterlyUseless),
+				(Title=\"Failure\", Description=\"%FIRSTNAME% failed to catch anything.\", ChanceRangeFrom=0.05, ChanceRangeTo=0.4, Target=None, ActionType=None, ActionAmount=0.0, Rating=Useless),
+				(Title=\"Success\", Description=\"%FIRSTNAME% caught a small fish.\", ChanceRangeFrom=0.4, ChanceRangeTo=0.8, Target=Camp, ActionType=GiveItem, ActionAmount=1.0, ActionWildcard=\"FishSmall\", Rating=Useful),
+				(Title=\"Huge success\", Description=\"%FIRSTNAME% caught a large fish.\", ChanceRangeFrom=0.8, ChanceRangeTo=0.95, Target=Camp, ActionType=GiveItem, ActionAmount=1.0, ActionWildcard=\"FishLarge\", Rating=Useful),
+				(Title=\"Legendary success\", Description=\"%FIRSTNAME% failed to catch anything.\", ChanceRangeFrom=0.95, ChanceRangeTo=1.0, Target=Camp, ActionType=GiveItem, ActionAmount=0.0, Rating=VeryUseful)
+			),
+			Influences=(
+				(Id=,Title=\"Brave\",Alteration=0.100000)
+			)
+		)",
+		"CombinedTask": false,
+		"Tags": [
+			
+		]
+	},
+	{
+		"Name": "RapidDogs",
+		"Id": "RapidDogs",
+		"Title": "Rapid dogs",
+		"Description": "Rapid dogs roam around near the camp. Someone will have to handle the situtation.",
+		"Outcomes": [
+			"(Title=\"Fail\",Description=\"%FIRSTNAME% failed to scare the dogs aways, and got hurt in the process.\",ChanceRangeFrom=0.000000,ChanceRangeTo=0.700000,Target=Person,ActionType=TakeDamage,ActionAmount=2.000000)",
+			"(Title=\"Success\",Description=,ChanceRangeFrom=0.700000,ChanceRangeTo=1.000000,Target=None,ActionType=None,ActionAmount=0.000000)"
+		],
+		"Influences": [
+			"(Id=,Title=\"Brave\",Alteration=0.100000)"
+		]
+	},
+]

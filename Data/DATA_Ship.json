@@ -1,0 +1,33 @@
+[
+	{
+		"Name": "NewRow",
+		"Id": "asdasd",
+		"TestStruct":
+		{
+			"Type": "Square",
+			"Rating": 2,
+			"TempMod":
+			{
+				"Rating": 4
+			}
+		},
+		"Modules": [
+			{
+				"Type": "Square",
+				"Rating": 0,
+				"TempMod":
+				{
+					"Rating": 0
+				}
+			},
+			{
+				"Type": "Square",
+				"Rating": 2,
+				"TempMod":
+				{
+					"Rating": 99
+				}
+			}
+		]
+	}
+]
