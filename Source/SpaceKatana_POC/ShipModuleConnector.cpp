@@ -22,7 +22,7 @@ void AShipModuleConnector::Join(AShipModuleConnector* ConnectTo, bool bUpdateTra
 		if (BoundTo != ConnectTo)
 		{
 
-
+			/*
 			AShipModule* Module = Cast<AShipModule>(GetParentActor());
 			if (Module)
 			{
@@ -37,8 +37,13 @@ void AShipModuleConnector::Join(AShipModuleConnector* ConnectTo, bool bUpdateTra
 			}
 
 			ConnectTo->Join(this, false, false);
+			*/
 		}
 	}
+
+	//AngleInDegrees = RadToDeg * ACos( Normal( VectorA ) dot Normal( VectorB ) );
+	//MedianRotation = RLerp( Rotator( VectorA ), Rotator( VectorB ), 0.5, true );
+	//Rotator( PointB - PointA );
 }
 
 
