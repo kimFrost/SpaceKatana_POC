@@ -12,7 +12,16 @@
 UENUM(BlueprintType)
 enum class EShipModuleType : uint8
 {
-	Square UMETA(DisplayName = "Square")
+	Blank UMETA(DisplayName = "Blank"),
+	Armor UMETA(DisplayName = "Armor"),
+	Core UMETA(DisplayName = "Core")
+};
+
+UENUM(BlueprintType)
+enum class EShipModuleShape : uint8
+{
+	Square UMETA(DisplayName = "Square"),
+	Corner UMETA(DisplayName = "Square")
 };
 
 
@@ -26,7 +35,7 @@ public:
 	FST_TempMod(int32 Rating = 0)
 		: Rating(Rating)
 	{}
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rating")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	int32 Rating;
 };
 
@@ -37,16 +46,28 @@ struct FST_ShipModule
 {
 	GENERATED_USTRUCT_BODY()
 public:
-	FST_ShipModule(EShipModuleType Type = EShipModuleType::Square, int32 Rating = 0)
-		: Type(Type)
-		, Rating(Rating)
+	FST_ShipModule(
+		FString Title = "",
+		EShipModuleType Type = EShipModuleType::Blank, 
+		EShipModuleShape Shape = EShipModuleShape::Square,
+		float Rotation = 0.f,
+		FVector2D Position = FVector2D{0, 0})
+		: Title(Title)
+		, Type(Type)
+		, Shape(Shape)
+		, Rotation(Rotation)
+		, Position(Position)
 	{}
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rating")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	EShipModuleType Type;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rating")
-	int32 Rating;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rating")
-	FST_TempMod TempMod;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	EShipModuleShape Shape;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	float Rotation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	FVector2D Position;
 };
 
 
@@ -64,9 +85,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Doom")
 	FString Id;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Doom")
-	FST_ShipModule TestStruct;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Doom")
 	TArray<FST_ShipModule> Modules;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Doom")
+	//FST_ShipModule TestStruct;
 };
 
 

@@ -9,10 +9,8 @@
 				"Shape": "Square",
 				"Rotation": 0,
 				"Position": {
-					0, 0
-				},
-				"TempMod": {
-					"Rating": 0
+					"X": 0,
+					"Y": 0
 				}
 			},
 			{
@@ -21,10 +19,8 @@
 				"Shape": "Square",
 				"Rotation": 0,
 				"Position": {
-					1, 0
-				},
-				"TempMod": {
-					"Rating": 99
+					"X": 1,
+					"Y": 0
 				}
 			},
 			{
@@ -33,10 +29,8 @@
 				"Shape": "Square",
 				"Rotation": 0,
 				"Position": {
-					0, 1
-				},
-				"TempMod": {
-					"Rating": 99
+					"X": 2,
+					"Y": 1
 				}
 			},
 			{
@@ -45,13 +39,10 @@
 				"Shape": "Corner",
 				"Rotation": 0,
 				"Position": {
-					2, 0
-				},
-				"TempMod": {
-					"Rating": 99
+					"X": 2,
+					"Y": 0
 				}
 			}
-			
 		]
 	}
 ]
