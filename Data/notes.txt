@@ -36,6 +36,10 @@ Use three branch structure with core being the base and then have children with 
 
 
 
+Ideas:
+- Armor block can't have turrets attach to it. Which makes turrets the vulnerable part of the ship. More turrets means more vulnerability
+
+
 
 var p1={
 	x: 0,

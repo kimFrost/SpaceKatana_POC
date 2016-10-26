@@ -1,33 +1,57 @@
 [
 	{
 		"Name": "NewRow",
-		"Id": "asdasd",
-		"TestStruct":
-		{
-			"Type": "Square",
-			"Rating": 2,
-			"TempMod":
-			{
-				"Rating": 4
-			}
-		},
+		"Id": "NewRow",
 		"Modules": [
 			{
-				"Type": "Square",
-				"Rating": 0,
-				"TempMod":
-				{
+				"Title": "Core",
+				"Type": "Core",
+				"Shape": "Square",
+				"Rotation": 0,
+				"Position": {
+					0, 0
+				},
+				"TempMod": {
 					"Rating": 0
 				}
 			},
 			{
-				"Type": "Square",
-				"Rating": 2,
-				"TempMod":
-				{
+				"Title": "Blank",
+				"Type": "Blank",
+				"Shape": "Square",
+				"Rotation": 0,
+				"Position": {
+					1, 0
+				},
+				"TempMod": {
+					"Rating": 99
+				}
+			},
+			{
+				"Title": "Blank",
+				"Type": "Blank",
+				"Shape": "Square",
+				"Rotation": 0,
+				"Position": {
+					0, 1
+				},
+				"TempMod": {
+					"Rating": 99
+				}
+			},
+			{
+				"Title": "Blank",
+				"Type": "Armor",
+				"Shape": "Corner",
+				"Rotation": 0,
+				"Position": {
+					2, 0
+				},
+				"TempMod": {
 					"Rating": 99
 				}
 			}
+			
 		]
 	}
 ]
