@@ -42,6 +42,19 @@
 					"X": 2,
 					"Y": 0
 				}
+			},
+			{
+				"Title": "Turret 1",
+				"Type": "TurretLaser",
+				"Shape": "Square",
+				"Rotation": 0,
+				"Position": {
+					"X": 3,
+					"Y": 0
+				},
+				"payload": {
+					"Title": "Turret 1"
+				}
 			}
 		]
 	}
