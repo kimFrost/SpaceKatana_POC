@@ -5,8 +5,7 @@
 		"Modules": [
 			{
 				"Title": "Core",
-				"Type": "Core",
-				"Shape": "Square",
+				"Type": "BlockCore",
 				"Rotation": 0,
 				"Position": {
 					"X": 0,
@@ -15,8 +14,7 @@
 			},
 			{
 				"Title": "Blank",
-				"Type": "Blank",
-				"Shape": "Square",
+				"Type": "BlockSquare",
 				"Rotation": 0,
 				"Position": {
 					"X": 1,
@@ -25,8 +23,7 @@
 			},
 			{
 				"Title": "Blank",
-				"Type": "Blank",
-				"Shape": "Square",
+				"Type": "BlockSquare",
 				"Rotation": 0,
 				"Position": {
 					"X": 2,
@@ -35,8 +32,7 @@
 			},
 			{
 				"Title": "Blank",
-				"Type": "Armor",
-				"Shape": "Corner",
+				"Type": "BlockCorner",
 				"Rotation": 0,
 				"Position": {
 					"X": 2,
@@ -46,14 +42,19 @@
 			{
 				"Title": "Turret 1",
 				"Type": "TurretLaser",
-				"Shape": "Square",
 				"Rotation": 0,
 				"Position": {
 					"X": 3,
 					"Y": 0
-				},
-				"payload": {
-					"Title": "Turret 1"
+				}
+			},
+			{
+				"Title": "Engine 1",
+				"Type": "Engine",
+				"Rotation": 0,
+				"Position": {
+					"X": 0,
+					"Y": -1
 				}
 			}
 		]

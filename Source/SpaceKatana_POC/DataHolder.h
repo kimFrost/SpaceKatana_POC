@@ -12,9 +12,11 @@
 UENUM(BlueprintType)
 enum class EShipModuleType : uint8
 {
-	Blank UMETA(DisplayName = "Blank"),
-	Armor UMETA(DisplayName = "Armor"),
-	Core UMETA(DisplayName = "Core")
+	BlockSquare UMETA(DisplayName = "BlockSquare"),
+	BlockCore UMETA(DisplayName = "BlockCore"),
+	BlockCorner UMETA(DisplayName = "BlockCorner"),
+	TurretLaser UMETA(DisplayName = "TurretLaser"),
+	Engine UMETA(DisplayName = "Engine")
 };
 
 UENUM(BlueprintType)
@@ -48,13 +50,11 @@ struct FST_ShipModule
 public:
 	FST_ShipModule(
 		FString Title = "",
-		EShipModuleType Type = EShipModuleType::Blank, 
-		EShipModuleShape Shape = EShipModuleShape::Square,
+		EShipModuleType Type = EShipModuleType::BlockSquare,
 		float Rotation = 0.f,
 		FVector2D Position = FVector2D{0, 0})
 		: Title(Title)
 		, Type(Type)
-		, Shape(Shape)
 		, Rotation(Rotation)
 		, Position(Position)
 	{}
@@ -62,8 +62,6 @@ public:
 	FString Title;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	EShipModuleType Type;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
-	EShipModuleShape Shape;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	float Rotation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
@@ -82,11 +80,11 @@ public:
 		: Id(Id)
 		, Modules(Modules)
 	{}
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Doom")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	FString Id;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Doom")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	TArray<FST_ShipModule> Modules;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Doom")
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	//FST_ShipModule TestStruct;
 };
 
