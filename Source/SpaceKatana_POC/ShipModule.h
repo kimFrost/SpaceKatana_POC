@@ -15,6 +15,12 @@ public:
 	// Sets default values for this actor's properties
 	AShipModule();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	float Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	float MaxHealth;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
