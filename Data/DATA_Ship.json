@@ -62,8 +62,8 @@
 				"Type": "Engine",
 				"Rotation": 0,
 				"Position": {
-					"X": 0,
-					"Y": -1
+					"X": -1,
+					"Y": 0
 				}
 			}
 		]
