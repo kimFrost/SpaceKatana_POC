@@ -49,6 +49,15 @@
 				}
 			},
 			{
+				"Title": "Turret 2",
+				"Type": "TurretLaser",
+				"Rotation": 90,
+				"Position": {
+					"X": 1,
+					"Y": 1
+				}
+			},
+			{
 				"Title": "Engine 1",
 				"Type": "Engine",
 				"Rotation": 0,
