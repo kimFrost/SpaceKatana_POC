@@ -21,6 +21,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	float MaxHealth;
 
+	// Connections
+
+	// Flood fill from Core
+	UFUNCTION(BlueprintCallable, Category = "Ship")
+	void UpdateConnected();
+
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	

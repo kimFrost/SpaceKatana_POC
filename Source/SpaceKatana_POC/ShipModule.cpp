@@ -14,6 +14,18 @@ AShipModule::AShipModule()
 	Health = Health;
 }
 
+
+/******************** UpdateConnected *************************/
+void AShipModule::UpdateConnected()
+{
+
+	// Loop all modules connected to this module.
+
+	// Pass self and list to connected module?
+
+
+}
+
 // Called when the game starts or when spawned
 void AShipModule::BeginPlay()
 {
