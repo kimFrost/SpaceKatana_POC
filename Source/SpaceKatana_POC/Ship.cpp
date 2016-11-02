@@ -19,7 +19,21 @@ AShip::AShip()
 /******************** UpdateModules *************************/
 void AShip::UpdateModules()
 {
+	Modules.Empty();
 	// Get all child modules of class
+
+	TArray<AActor*> ChildActors;
+	GetAllChildActors(ChildActors, false);
+	for (auto& Actor : ChildActors)
+	{
+		AShipModule* Module = Cast<AShipModule>(Actor);
+		if (IsValid(Module))
+		{
+			Modules.Add(Module);
+		}
+	}
+
+	// Reset Modules
 	for (auto& Module : Modules)
 	{
 		if (IsValid(Module))
@@ -27,16 +41,32 @@ void AShip::UpdateModules()
 			Module->bIsConnectedToRoot = false;
 			Module->bHasBeenUpdated = false;
 			Module->DistanceFromRoot = -1;
+
+			if (Module->bIsDestroyed)
+			{
+				//Modules.Remove(Module); // Will crash the engine. Don't know why
+				Module->Destroy();
+				continue;
+			}
+
 			if (Module->bIsRoot)
 			{
 				RootModule = Module;
 			}
 		}
-		else
+	}
+
+
+	/*
+	for (int32 Index = Modules.Num() - 1; Index >= 0; --Index)
+	{
+		if (!IsValid(Modules[Index]))
 		{
-			Modules.Remove(Module);
+			const bool bAllowShrinking = false;
+			Modules.RemoveAt(Index, 1, bAllowShrinking);
 		}
 	}
+	*/
 
 	//~~ Update all ship's modules connections ~~//
 	UpdateConnections();
@@ -79,6 +109,7 @@ void AShip::UpdateModules()
 			
 					if (NeighborModule && !VisitedModules.Contains(NeighborModule))
 					{
+						NeighborModule->bIsConnectedToRoot = true;
 						NeighborModule->DistanceFromRoot = k + 1;
 						ModuleRangeMap[k + 1].Add(NeighborModule); //~~ Add Neighbor module to the next frontier ~~//
 						VisitedModules.Add(NeighborModule); //~~ Add to visited, so that neighbors don't overlap each other. ~~//
@@ -91,7 +122,7 @@ void AShip::UpdateModules()
 
 	// Set all modules bIsConnectedToRoot = false; (DONE)
 
-	// Flood fill from root module (TODO)
+	// Flood fill from root module (DONE)
 
 	// Detach all that still are bIsConnectedToRoot == false (TODO)
 

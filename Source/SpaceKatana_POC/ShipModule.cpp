@@ -17,6 +17,7 @@ AShipModule::AShipModule()
 	bIsRoot = false;
 	bIsConnectedToRoot = false;
 	bHasBeenUpdated = false;
+	bIsDestroyed = false;
 
 	DistanceFromRoot = 0;
 }
@@ -51,7 +52,7 @@ void AShipModule::UpdateConnections()
 		}
 		else
 		{
-			Connectors.Remove(Connector);
+			//Connectors.Remove(Connector);
 		}
 	}
 

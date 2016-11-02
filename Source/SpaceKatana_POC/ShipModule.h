@@ -31,6 +31,9 @@ public:
 	bool bHasBeenUpdated;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	bool bIsDestroyed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	int DistanceFromRoot;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
