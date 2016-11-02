@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpaceKatana_POC.h"
+#include "ShipModuleConnector.h"
 #include "ShipModule.h"
 
 
@@ -12,18 +13,51 @@ AShipModule::AShipModule()
 
 	MaxHealth = 1000.f;
 	Health = Health;
+
+	bIsRoot = false;
+	bIsConnectedToRoot = false;
+	bHasBeenUpdated = false;
+
+	DistanceFromRoot = 0;
 }
 
 
-/******************** UpdateConnected *************************/
-void AShipModule::UpdateConnected()
+
+/******************** UpdateConnections *************************/
+void AShipModule::UpdateConnections()
 {
+	ConnectedTo.Empty();
+	for (auto& Connector : Connectors)
+	{
+		if (IsValid(Connector))
+		{
+			Connector->BoundTo = nullptr; //~~ Reset BoundTo ~~//
+			TArray<AActor*> OverlappingActors;
+			Connector->GetOverlappingActors(OverlappingActors, Connector->StaticClass());
+			for (auto& Actor : OverlappingActors)
+			{
+				AShipModuleConnector* OtherConnector = Cast<AShipModuleConnector>(Actor);
+				if (OtherConnector)
+				{
+					Connector->BoundTo = OtherConnector;
+					AShipModule* OtherModule = Cast<AShipModule>(OtherConnector->GetParentActor());
+					if (OtherModule)
+					{
+						ConnectedTo.Add(OtherModule);
+					}
+					break;
+				}
+			}
+		}
+		else
+		{
+			Connectors.Remove(Connector);
+		}
+	}
 
 	// Loop all modules connected to this module.
 
 	// Pass self and list to connected module?
-
-
 }
 
 // Called when the game starts or when spawned

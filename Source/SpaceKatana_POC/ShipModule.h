@@ -3,7 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-
+#include "ShipModuleConnector.h"
 #include "ShipModule.generated.h"
 
 UCLASS()
@@ -21,12 +21,28 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	float MaxHealth;
 
-	// Connections
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	bool bIsRoot;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	bool bIsConnectedToRoot;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	bool bHasBeenUpdated;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	int DistanceFromRoot;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	TArray<AShipModuleConnector*> Connectors;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	TArray<AShipModule*> ConnectedTo;
+
+	UFUNCTION(BlueprintCallable, Category = "Ship")
+	void UpdateConnections();
 
 	// Flood fill from Core
-	UFUNCTION(BlueprintCallable, Category = "Ship")
-	void UpdateConnected();
-
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
