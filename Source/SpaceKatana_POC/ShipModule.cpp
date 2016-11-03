@@ -23,6 +23,27 @@ AShipModule::AShipModule()
 }
 
 
+/******************** DestroyModule *************************/
+void AShipModule::DestroyModule()
+{
+	//Module->Destroy();
+	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	//DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	bIsConnectedToRoot = false;
+	DistanceFromRoot = -1;
+
+	for (auto& Connector : Connectors)
+	{
+		if (IsValid(Connector))
+		{
+			Connector->SetActorEnableCollision(false);
+		}
+	}
+
+	UpdateConnections();
+
+	OnShipModuleDestroyed.Broadcast(this);
+}
 
 /******************** UpdateConnections *************************/
 void AShipModule::UpdateConnections()
@@ -40,11 +61,14 @@ void AShipModule::UpdateConnections()
 				AShipModuleConnector* OtherConnector = Cast<AShipModuleConnector>(Actor);
 				if (OtherConnector)
 				{
-					Connector->BoundTo = OtherConnector;
 					AShipModule* OtherModule = Cast<AShipModule>(OtherConnector->GetParentActor());
 					if (OtherModule)
 					{
-						ConnectedTo.Add(OtherModule);
+						if (GetParentActor() == OtherModule->GetParentActor())
+						{
+							Connector->BoundTo = OtherConnector;
+							ConnectedTo.Add(OtherModule);
+						}
 					}
 					break;
 				}

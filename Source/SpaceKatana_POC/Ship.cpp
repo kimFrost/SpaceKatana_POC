@@ -20,8 +20,8 @@ AShip::AShip()
 void AShip::UpdateModules()
 {
 	Modules.Empty();
-	// Get all child modules of class
 
+	// Get all child modules of class
 	TArray<AActor*> ChildActors;
 	GetAllChildActors(ChildActors, false);
 	for (auto& Actor : ChildActors)
@@ -29,7 +29,14 @@ void AShip::UpdateModules()
 		AShipModule* Module = Cast<AShipModule>(Actor);
 		if (IsValid(Module))
 		{
-			Modules.Add(Module);
+			if (Module->bIsDestroyed)
+			{
+				Module->DestroyModule();
+			}
+			else
+			{
+				Modules.Add(Module);
+			}
 		}
 	}
 
@@ -44,14 +51,14 @@ void AShip::UpdateModules()
 
 			if (Module->bIsDestroyed)
 			{
-				//Modules.Remove(Module); // Will crash the engine. Don't know why
-				Module->Destroy();
+				//Modules.Remove(Module); // Will crash the engine. Cannot remove will in iteration
 				continue;
 			}
 
 			if (Module->bIsRoot)
 			{
 				RootModule = Module;
+				RootModule->bIsConnectedToRoot = true;
 			}
 		}
 	}
@@ -126,6 +133,13 @@ void AShip::UpdateModules()
 
 	// Detach all that still are bIsConnectedToRoot == false (TODO)
 
+	for (auto& Module : Modules)
+	{
+		if (IsValid(Module) && !Module->bIsConnectedToRoot)
+		{
+			Module->DestroyModule();
+		}
+	}
 }
 
 /******************** UpdateConnections *************************/

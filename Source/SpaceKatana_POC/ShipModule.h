@@ -6,6 +6,12 @@
 #include "ShipModuleConnector.h"
 #include "ShipModule.generated.h"
 
+
+//~~~~~ Delegates/Event dispatcher ~~~~~//
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FShipModuleDestroyed, AShipModule*, Module);
+
+
+
 UCLASS()
 class SPACEKATANA_POC_API AShipModule : public AActor
 {
@@ -43,15 +49,22 @@ public:
 	TArray<AShipModule*> ConnectedTo;
 
 	UFUNCTION(BlueprintCallable, Category = "Ship")
+	void DestroyModule();
+
+	UFUNCTION(BlueprintCallable, Category = "Ship")
 	void UpdateConnections();
 
-	// Flood fill from Core
+
+	UPROPERTY(BlueprintAssignable, Category = "Input")
+	FShipModuleDestroyed OnShipModuleDestroyed;
+
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
+
 
 	
 	
