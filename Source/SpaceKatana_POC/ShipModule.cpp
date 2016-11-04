@@ -19,7 +19,7 @@ AShipModule::AShipModule()
 	bHasBeenUpdated = false;
 	bIsDestroyed = false;
 
-	DistanceFromRoot = 0;
+	DistanceFromRoot = -1;
 }
 
 
@@ -27,7 +27,6 @@ AShipModule::AShipModule()
 void AShipModule::DestroyModule()
 {
 	//Module->Destroy();
-	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	//DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	bIsConnectedToRoot = false;
 	DistanceFromRoot = -1;

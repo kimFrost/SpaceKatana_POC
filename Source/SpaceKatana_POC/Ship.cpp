@@ -59,6 +59,7 @@ void AShip::UpdateModules()
 			{
 				RootModule = Module;
 				RootModule->bIsConnectedToRoot = true;
+				RootModule->bHasBeenUpdated = true;
 			}
 		}
 	}
@@ -118,6 +119,7 @@ void AShip::UpdateModules()
 					{
 						NeighborModule->bIsConnectedToRoot = true;
 						NeighborModule->DistanceFromRoot = k + 1;
+						NeighborModule->bHasBeenUpdated = true;
 						ModuleRangeMap[k + 1].Add(NeighborModule); //~~ Add Neighbor module to the next frontier ~~//
 						VisitedModules.Add(NeighborModule); //~~ Add to visited, so that neighbors don't overlap each other. ~~//
 					}
