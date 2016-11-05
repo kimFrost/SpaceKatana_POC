@@ -6,6 +6,10 @@
 #include "DataHolder.generated.h"
 
 
+//~~~~~ FORWARD DECLATIONS ~~~~~//
+class AShipModule;
+
+
 
 //~~~~~ ENUMS ~~~~~//
 
@@ -39,6 +43,28 @@ public:
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	int32 Rating;
+};
+
+// FST_GridTile
+USTRUCT(BlueprintType)
+struct FST_GridTile
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	FST_GridTile(AShipModule* ShipModule = nullptr, int Column = 0, int Row = 0, FVector WorldLocation = FVector{ 0.f, 0.f, 0.f })
+		: ShipModule(ShipModule)
+		, Column(Column)
+		, Row(Row)
+		, WorldLocation(WorldLocation)
+	{}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	AShipModule* ShipModule;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	int Column;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	int Row;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	FVector WorldLocation;
 };
 
 
