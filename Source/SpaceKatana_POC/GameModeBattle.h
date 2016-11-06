@@ -11,6 +11,7 @@
 //~~~~~ FORWARD DECLATIONS ~~~~~//
 class AShip;
 class AShipModule;
+class UGridTile;
 
 
 UCLASS()
@@ -29,13 +30,15 @@ public:
 	int GridSizeY;
 	float GridTileSize;
 
-	TArray<FST_GridTile> GridTiles;
+	//TArray<FST_GridTile> GridTiles;
+	TArray<UGridTile*> GridTiles;
 
 	void ConstructGrid();
 
 	//struct FST_GridTile& GetGridTile(FVector WorldLocation);
 	UFUNCTION(BlueprintCallable, Category = Grid)
-	void GetGridTile(UPARAM(ref) FST_GridTile& GridTile, FVector WorldLocation);
+	UGridTile* GetGridTile(FVector WorldLocation, bool bRoundOutOfBounds);
+	//void GetGridTile(UPARAM(ref) FST_GridTile& GridTile, FVector WorldLocation);
 
 
 	bool IsValidShipLocation(AShip* Ship, FVector WorldLocation);
