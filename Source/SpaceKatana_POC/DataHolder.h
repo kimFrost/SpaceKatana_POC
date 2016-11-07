@@ -27,9 +27,16 @@ UENUM(BlueprintType)
 enum class EShipModuleShape : uint8
 {
 	Square UMETA(DisplayName = "Square"),
-	Corner UMETA(DisplayName = "Square")
+	Corner UMETA(DisplayName = "Corner")
 };
 
+
+UENUM(BlueprintType)
+enum class EShipMessage : uint8
+{
+	MSG_PlayerSighted UMETA(DisplayName = "PlayerSighted"),
+	MSG_Reset UMETA(DisplayName = "Reset")
+};
 
 //~~~~~ STRUCTS ~~~~~//
 
