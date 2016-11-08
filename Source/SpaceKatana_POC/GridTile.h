@@ -19,7 +19,7 @@ public:
 	~UGridTile();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
-	AShipModule* ShipModule;
+	AShipModule* StoredShipModule;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	int Column;

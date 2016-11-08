@@ -28,11 +28,15 @@ public:
 
 	int GridSizeX;
 	int GridSizeY;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	float GridTileSize;
 
 	//TArray<FST_GridTile> GridTiles;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	TArray<UGridTile*> GridTiles;
 
+	UFUNCTION(BlueprintCallable, Category = Grid)
 	void ConstructGrid();
 
 	//struct FST_GridTile& GetGridTile(FVector WorldLocation);

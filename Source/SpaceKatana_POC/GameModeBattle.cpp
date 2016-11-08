@@ -13,7 +13,7 @@
 AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : Super(ObjectInitializer)
 {
 	GridSizeX = 30;
-	GridSizeX = 20;
+	GridSizeY = 20;
 	GridTileSize = 100.f;
 }
 
@@ -21,13 +21,14 @@ AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : 
 
 void AGameModeBattle::ConstructGrid()
 {
-	for (int Y = 0; Y > GridSizeY; Y++)
+	for (int Y = 0; Y < GridSizeY; Y++)
 	{
-		for (int X = 0; X > GridSizeX; X++)
+		for (int X = 0; X < GridSizeX; X++)
 		{
 			FVector TileWorldLocation;
 			TileWorldLocation.X = GridTileSize * X;
 			TileWorldLocation.Y = GridTileSize * Y;
+			TileWorldLocation.Z = 0.f;
 
 			//FST_GridTile Tile = FST_GridTile(nullptr, X, Y, TileWorldLocation);
 			UGridTile* Tile = NewObject<UGridTile>();
@@ -56,8 +57,8 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 	float TileXGuess = RelativeLocation.X / GridSizeX;
 	float TileYGuess = RelativeLocation.Y / GridSizeY;
 
-	int TileX = FMath::Floor(TileXGuess);
-	int TileY = FMath::Floor(TileYGuess);
+	int TileX = FMath::FloorToInt(TileXGuess);
+	int TileY = FMath::FloorToInt(TileYGuess);
 
 	if (bRoundOutOfBounds)
 	{
@@ -96,7 +97,7 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 
 bool AGameModeBattle::IsValidShipLocation(AShip* Ship, FVector WorldLocation)
 {
-	bool Valid = false;
+	bool Valid = true;
 	if (IsValid(Ship))
 	{
 		for (auto& Module : Ship->Modules)
@@ -106,7 +107,11 @@ bool AGameModeBattle::IsValidShipLocation(AShip* Ship, FVector WorldLocation)
 				UGridTile* Tile = GetGridTile(Module->GetActorLocation(), false);
 				if (IsValid(Tile))
 				{
-
+					if (Tile->StoredShipModule)
+					{
+						Valid = false;
+						break;
+					}
 				}
 			}
 		}
