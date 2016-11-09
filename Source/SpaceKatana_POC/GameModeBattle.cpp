@@ -13,8 +13,8 @@
 // Sets default values
 AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : Super(ObjectInitializer)
 {
-	GridSizeX = 15;
-	GridSizeY = 10;
+	GridSizeX = 20;
+	GridSizeY = 15;
 	GridTileSize = 100.f;
 }
 
@@ -28,9 +28,7 @@ void AGameModeBattle::ConstructGrid()
 		for (int X = 0; X < GridSizeX; X++)
 		{
 			FVector TileWorldLocation;
-			//TileWorldLocation.X = GridTileSize * X;
 			TileWorldLocation.X = GridTileSize * X - (GridTileSize * GridSizeX / 2);
-			//TileWorldLocation.Y = GridTileSize * Y;
 			TileWorldLocation.Y = GridTileSize * Y - (GridTileSize * GridSizeY / 2);
 			TileWorldLocation.Z = 0.f;
 
@@ -60,11 +58,8 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 
 	if (bRoundOutOfBounds)
 	{
-		//UKismetMathLibrary::ClampVectorSize(RelativeLocation, 0.f, 10.f);
-		//UKismetMathLibrary::Clam
 		RelativeLocation.X = FMath::Clamp(RelativeLocation.X, 0.f, (GridSizeX - 1) * GridTileSize);
 		RelativeLocation.Y = FMath::Clamp(RelativeLocation.Y, 0.f, (GridSizeY - 1) * GridTileSize);
-		//FMath::Clamp(RelativeLocation, 0, GridSizeX - 1);
 	}
 
 	//UE_LOG(YourLog, Warning, TEXT("MyCharacter's Location is %s"), RelativeLocation.ToString());
@@ -81,12 +76,6 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 	int TileX = FMath::FloorToInt(TileXGuess);
 	int TileY = FMath::FloorToInt(TileYGuess);
 
-	if (bRoundOutOfBounds)
-	{
-		//FMath::Clamp(TileX, 0, GridSizeX - 1);
-		//FMath::Clamp(TileY, 0, GridSizeY - 1);
-	}
-	
 	int TileIndex = TileY * GridSizeX + TileX;
 	if (GridTiles.IsValidIndex(TileIndex))
 	{
