@@ -2,6 +2,7 @@
 
 #include "SpaceKatana_POC.h"
 #include "DataHolder.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Ship.h"
 #include "ShipModule.h"
 #include "GridTile.h"
@@ -13,7 +14,7 @@
 AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : Super(ObjectInitializer)
 {
 	GridSizeX = 15;
-	GridSizeY = 5;
+	GridSizeY = 10;
 	GridTileSize = 100.f;
 }
 
@@ -57,16 +58,33 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 
 	FVector RelativeLocation = WorldLocation + FVector{(GridTileSize * GridSizeX / 2), (GridTileSize * GridSizeY / 2), 0.f };
 
-	float TileXGuess = RelativeLocation.X / GridSizeX;
-	float TileYGuess = RelativeLocation.Y / GridSizeY;
+	if (bRoundOutOfBounds)
+	{
+		//UKismetMathLibrary::ClampVectorSize(RelativeLocation, 0.f, 10.f);
+		//UKismetMathLibrary::Clam
+		RelativeLocation.X = FMath::Clamp(RelativeLocation.X, 0.f, (GridSizeX - 1) * GridTileSize);
+		RelativeLocation.Y = FMath::Clamp(RelativeLocation.Y, 0.f, (GridSizeY - 1) * GridTileSize);
+		//FMath::Clamp(RelativeLocation, 0, GridSizeX - 1);
+	}
+
+	//UE_LOG(YourLog, Warning, TEXT("MyCharacter's Location is %s"), RelativeLocation.ToString());
+
+	//GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::White, WorldLocation.ToString());
+	GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::White, RelativeLocation.ToString());
+
+	float TileXGuess = RelativeLocation.X / GridTileSize;
+	float TileYGuess = RelativeLocation.Y / GridTileSize;
+
+	GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::White, TEXT("TileXGuess: ") + FString::SanitizeFloat(TileXGuess));
+	GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::White, TEXT("TileYGuess: ") + FString::SanitizeFloat(TileYGuess));
 
 	int TileX = FMath::FloorToInt(TileXGuess);
 	int TileY = FMath::FloorToInt(TileYGuess);
 
 	if (bRoundOutOfBounds)
 	{
-		FMath::Clamp(TileX, 0, GridSizeX - 1);
-		FMath::Clamp(TileY, 0, GridSizeY - 1);
+		//FMath::Clamp(TileX, 0, GridSizeX - 1);
+		//FMath::Clamp(TileY, 0, GridSizeY - 1);
 	}
 	
 	int TileIndex = TileY * GridSizeX + TileX;
