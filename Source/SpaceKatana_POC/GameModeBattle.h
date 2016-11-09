@@ -32,9 +32,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	float GridTileSize;
 
-	//TArray<FST_GridTile> GridTiles;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	TArray<UGridTile*> GridTiles;
+	//TArray<FST_GridTile> GridTiles;
 
 	UFUNCTION(BlueprintCallable, Category = Grid)
 	void ConstructGrid();

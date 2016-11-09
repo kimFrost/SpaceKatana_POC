@@ -29,4 +29,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	FVector WorldLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
+	bool bDebugMe;
 };

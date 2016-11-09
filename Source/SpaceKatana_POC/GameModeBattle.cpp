@@ -12,8 +12,8 @@
 // Sets default values
 AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : Super(ObjectInitializer)
 {
-	GridSizeX = 30;
-	GridSizeY = 20;
+	GridSizeX = 15;
+	GridSizeY = 5;
 	GridTileSize = 100.f;
 }
 
@@ -21,13 +21,16 @@ AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : 
 
 void AGameModeBattle::ConstructGrid()
 {
+
 	for (int Y = 0; Y < GridSizeY; Y++)
 	{
 		for (int X = 0; X < GridSizeX; X++)
 		{
 			FVector TileWorldLocation;
-			TileWorldLocation.X = GridTileSize * X;
-			TileWorldLocation.Y = GridTileSize * Y;
+			//TileWorldLocation.X = GridTileSize * X;
+			TileWorldLocation.X = GridTileSize * X - (GridTileSize * GridSizeX / 2);
+			//TileWorldLocation.Y = GridTileSize * Y;
+			TileWorldLocation.Y = GridTileSize * Y - (GridTileSize * GridSizeY / 2);
 			TileWorldLocation.Z = 0.f;
 
 			//FST_GridTile Tile = FST_GridTile(nullptr, X, Y, TileWorldLocation);
@@ -52,7 +55,7 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 {
 	UGridTile* Tile = nullptr;
 
-	FVector RelativeLocation = WorldLocation;
+	FVector RelativeLocation = WorldLocation + FVector{(GridTileSize * GridSizeX / 2), (GridTileSize * GridSizeY / 2), 0.f };
 
 	float TileXGuess = RelativeLocation.X / GridSizeX;
 	float TileYGuess = RelativeLocation.Y / GridSizeY;

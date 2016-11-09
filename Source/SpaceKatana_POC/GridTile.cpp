@@ -14,7 +14,7 @@ UGridTile::UGridTile()
 	Column = -1;
 	Row = -1;
 	WorldLocation = FVector{0.f, 0.f, 0.f};
-
+	bDebugMe = false;
 }
 
 
