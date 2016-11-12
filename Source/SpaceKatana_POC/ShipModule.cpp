@@ -67,11 +67,16 @@ void AShipModule::UpdateConnections()
 					AShipModule* OtherModule = Cast<AShipModule>(OtherConnector->GetParentActor());
 					if (OtherModule)
 					{
+						/*
 						if (GetParentActor() == OtherModule->GetParentActor())
 						{
 							Connector->BoundTo = OtherConnector;
 							ConnectedTo.Add(OtherModule);
 						}
+						*/
+						//~~ Allow modules from outside the ship to connect ~~//
+						Connector->BoundTo = OtherConnector;
+						ConnectedTo.Add(OtherModule);
 					}
 					break;
 				}
