@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpaceKatana_POC.h"
+#include "DataHolder.h"
 #include "ShipModuleConnector.h"
 #include "ShipModule.h"
 
@@ -18,6 +19,8 @@ AShipModule::AShipModule()
 	bIsConnectedToRoot = false;
 	bHasBeenUpdated = false;
 	bIsDestroyed = false;
+	CurrentState = EModuleState::STATE_FlyIn;
+	FlyInDirection = FVector(1, 0, 0);
 
 	DistanceFromRoot = -1;
 }
@@ -29,6 +32,7 @@ void AShipModule::DestroyModule()
 	//Module->Destroy();
 	//DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	bIsConnectedToRoot = false;
+	CurrentState = EModuleState::STATE_Destroyed;
 	DistanceFromRoot = -1;
 
 	for (auto& Connector : Connectors)

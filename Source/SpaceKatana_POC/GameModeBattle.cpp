@@ -29,7 +29,9 @@ void AGameModeBattle::ConstructGrid()
 		{
 			FVector TileWorldLocation;
 			TileWorldLocation.X = GridTileSize * X - (GridTileSize * GridSizeX / 2);
+			//TileWorldLocation.X = GridTileSize * X - (GridTileSize * GridSizeX / 2) - GridTileSize / 2;
 			TileWorldLocation.Y = GridTileSize * Y - (GridTileSize * GridSizeY / 2);
+			//TileWorldLocation.Y = GridTileSize * Y - (GridTileSize * GridSizeY / 2) - GridTileSize / 2;
 			TileWorldLocation.Z = 0.f;
 
 			//FST_GridTile Tile = FST_GridTile(nullptr, X, Y, TileWorldLocation);
@@ -46,6 +48,33 @@ void AGameModeBattle::ConstructGrid()
 	}
 }
 
+
+FVector AGameModeBattle::CoordsToWorldLocation(int X, int Y)
+{
+	return FVector(X * GridTileSize - (GridTileSize * GridSizeX / 2), Y * GridTileSize - (GridTileSize * GridSizeY / 2), 0);
+}
+
+
+FVector2D AGameModeBattle::WorldLocationToCoords(FVector WorldLocation, bool bRoundOutOfBounds)
+{
+	FVector RelativeLocation = WorldLocation + FVector{ (GridTileSize * GridSizeX / 2), (GridTileSize * GridSizeY / 2), 0.f };
+
+	if (bRoundOutOfBounds)
+	{
+		RelativeLocation.X = FMath::Clamp(RelativeLocation.X, 0.f, (GridSizeX - 1) * GridTileSize);
+		RelativeLocation.Y = FMath::Clamp(RelativeLocation.Y, 0.f, (GridSizeY - 1) * GridTileSize);
+	}
+
+	float TileXGuess = RelativeLocation.X / GridTileSize;
+	float TileYGuess = RelativeLocation.Y / GridTileSize;
+
+	int TileX = FMath::FloorToInt(TileXGuess);
+	int TileY = FMath::FloorToInt(TileYGuess);
+
+	return (FVector2D(TileX, TileY));
+}
+
+
 //void UKismetProceduralMeshLibrary::ConvertQuadToTriangles(TArray<int32>& Triangles, int32 Vert0, int32 Vert1, int32 Vert2, int32 Vert3)
 
 //struct FST_GridTile& AGameModeBattle::GetGridTile(FVector WorldLocation)
@@ -54,6 +83,7 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 {
 	UGridTile* Tile = nullptr;
 
+	/*
 	FVector RelativeLocation = WorldLocation + FVector{(GridTileSize * GridSizeX / 2), (GridTileSize * GridSizeY / 2), 0.f };
 
 	if (bRoundOutOfBounds)
@@ -75,8 +105,11 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 
 	int TileX = FMath::FloorToInt(TileXGuess);
 	int TileY = FMath::FloorToInt(TileYGuess);
+	*/
 
-	int TileIndex = TileY * GridSizeX + TileX;
+	FVector2D TileCoords = WorldLocationToCoords(WorldLocation, bRoundOutOfBounds);
+
+	int TileIndex = TileCoords.Y * GridSizeX + TileCoords.X;
 	if (GridTiles.IsValidIndex(TileIndex))
 	{
 		return GridTiles[TileIndex];
@@ -104,6 +137,33 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 
 	// Loop GridTiles and alsways store the closest one as return value;
 }
+
+
+AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, AShip* Buyer)
+{
+	AShipModule* Module = nullptr;
+
+	FVector Location = CoordsToWorldLocation(X, Y) + FVector(GridTileSize / 2, GridTileSize / 2, 0);
+	FRotator Rotation;
+
+	//Module = World->SpawnActor<YourClass>(BlueprintVar, SpawnLocation, SpawnRotation);
+
+	FActorSpawnParameters SpawnParameters;
+
+	UWorld* const World = GetWorld();
+	if (World)
+	{
+		Module = World->SpawnActor<AShipModule>(ModuleClass, Location, Rotation);
+
+		//World->SpawnActor<AShipModule>(ModuleClass, SpawnParameters);
+		//GunInstance = GetWorld()->SpawnActor<AGun>(TSubclassOf<AGun>(*(BlueprintLoader::Get().GetBP(FName("BP_2")))), spawnParams);
+		//World->SpawnActor<AShipModule>(Module, FVector(0, 0, 0), FRotator::ZeroRotator);
+		//Module = (AShipModule*)GetWorld()->SpawnActor(ModuleClass, NAME_None, Location);
+	}
+
+	return Module;
+}
+
 
 bool AGameModeBattle::IsValidShipLocation(AShip* Ship, FVector WorldLocation)
 {
@@ -133,18 +193,4 @@ bool AGameModeBattle::IsValidShipLocation(AShip* Ship, FVector WorldLocation)
 		// Or loop passed array of locations and check 
 	}
 	return Valid;
-}
-
-bool AGameModeBattle::RegisterOnTile(AShipModule* ShipModule)
-{
-	bool Registered = false;
-
-	// One Ship Move, register module on tile
-
-	// Or loop every new turn and trace each tile for module in world location?
-
-
-
-
-	return Registered;
 }

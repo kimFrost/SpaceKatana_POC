@@ -30,6 +30,13 @@ enum class EShipModuleShape : uint8
 	Corner UMETA(DisplayName = "Corner")
 };
 
+UENUM(BlueprintType)
+enum class EModuleState : uint8
+{
+	STATE_Attached UMETA(DisplayName = "Attached"),
+	STATE_Destroyed UMETA(DisplayName = "Destroyed"),
+	STATE_FlyIn UMETA(DisplayName = "Flying in")
+};
 
 UENUM(BlueprintType)
 enum class EShipMessage : uint8
@@ -37,6 +44,8 @@ enum class EShipMessage : uint8
 	MSG_PlayerSighted UMETA(DisplayName = "PlayerSighted"),
 	MSG_Reset UMETA(DisplayName = "Reset")
 };
+
+
 
 //~~~~~ STRUCTS ~~~~~//
 

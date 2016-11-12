@@ -22,3 +22,18 @@ UGridTile::~UGridTile()
 {
 
 }
+
+bool UGridTile::RegisterOnTile(AShipModule * ShipModule)
+{
+	bool Registered = false;
+
+	if (!StoredShipModule)
+	{
+		StoredShipModule = ShipModule;
+		Registered = true;
+	}
+
+	// Or loop every new turn and trace each tile for module in world location?
+
+	return Registered;
+}

@@ -40,16 +40,22 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Grid)
 	void ConstructGrid();
 
+	UFUNCTION(BlueprintCallable, Category = Grid)
+	FVector CoordsToWorldLocation(int X, int Y);
+
+	UFUNCTION(BlueprintCallable, Category = Grid)
+	FVector2D WorldLocationToCoords(FVector WorldLocation, bool bRoundOutOfBounds);
+
+
 	//struct FST_GridTile& GetGridTile(FVector WorldLocation);
 	UFUNCTION(BlueprintCallable, Category = Grid)
 	UGridTile* GetGridTile(FVector WorldLocation, bool bRoundOutOfBounds);
 	//void GetGridTile(UPARAM(ref) FST_GridTile& GridTile, FVector WorldLocation);
 
+	UFUNCTION(BlueprintCallable, Category = Grid)
+	AShipModule* SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, AShip* Buyer);
 
 	bool IsValidShipLocation(AShip* Ship, FVector WorldLocation);
-
-	bool RegisterOnTile(AShipModule* ShipModule);
-
 
 
 

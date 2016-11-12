@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "DataHolder.h"
 #include "ShipModuleConnector.h"
 #include "ShipModule.generated.h"
 
@@ -34,6 +35,12 @@ public:
 	bool bIsConnectedToRoot;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	EModuleState CurrentState;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	FVector FlyInDirection;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	bool bHasBeenUpdated;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
@@ -41,6 +48,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	int DistanceFromRoot;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	TArray<AShipModuleConnector*> Connectors;

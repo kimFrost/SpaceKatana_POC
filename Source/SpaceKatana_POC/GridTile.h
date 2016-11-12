@@ -21,15 +21,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	AShipModule* StoredShipModule;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	int Column;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	int Row;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	FVector WorldLocation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	bool bDebugMe;
+
+	UFUNCTION(BlueprintCallable, Category = Grid)
+	bool RegisterOnTile(AShipModule* ShipModule);
+
+
 };
