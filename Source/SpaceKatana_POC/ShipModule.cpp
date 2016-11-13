@@ -19,7 +19,7 @@ AShipModule::AShipModule()
 	bIsConnectedToRoot = false;
 	bHasBeenUpdated = false;
 	bIsDestroyed = false;
-	CurrentState = EModuleState::STATE_FlyIn;
+	CurrentState = EModuleState::STATE_Static;
 	FlyInDirection = FVector(1, 0, 0);
 
 	DistanceFromRoot = -1;
@@ -47,6 +47,19 @@ void AShipModule::DestroyModule()
 
 	OnShipModuleDestroyed.Broadcast(this);
 }
+
+
+/******************** UpdateModule *************************/
+void AShipModule::UpdateModule()
+{
+	bIsConnectedToRoot = false;
+	DistanceFromRoot = -1;
+
+	CurrentState = EModuleState::STATE_Static;
+
+	UpdateConnections();
+}
+
 
 /******************** UpdateConnections *************************/
 void AShipModule::UpdateConnections()
@@ -104,6 +117,39 @@ void AShipModule::BeginPlay()
 void AShipModule::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
+
+	/*
+	if (CurrentState == EModuleState::STATE_FlyIn)
+	{
+		for (auto& Connector : Connectors)
+		{
+			if (IsValid(Connector))
+			{
+				TArray<AActor*> OverlappingActors;
+				Connector->GetOverlappingActors(OverlappingActors, Connector->StaticClass());
+
+				for (auto& Actor : OverlappingActors)
+				{
+					AShipModuleConnector* OtherConnector = Cast<AShipModuleConnector>(Actor);
+					if (OtherConnector)
+					{
+						AShipModule* OtherModule = Cast<AShipModule>(OtherConnector->GetParentActor());
+						if (OtherModule)
+						{
+						
+							// Spawn copy of self as child of ship.
+							// Or can I attach as child?
+
+							//Connector->BoundTo = OtherConnector;
+							//ConnectedTo.Add(OtherModule);
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+	*/
 
 }
 

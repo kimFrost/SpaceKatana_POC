@@ -75,6 +75,32 @@ FVector2D AGameModeBattle::WorldLocationToCoords(FVector WorldLocation, bool bRo
 }
 
 
+void AGameModeBattle::UpdateAllModules()
+{
+	/*
+	TArray<AActor*> ChildActors;
+	GetAllChildActors(ChildActors, false);
+	for (auto& Actor : ChildActors)
+	{
+		AShipModule* Module = Cast<AShipModule>(Actor);
+		if (IsValid(Module))
+		{
+
+		}
+	}
+	*/
+	for (TActorIterator<AShipModule> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	{
+		// Same as with the Object Iterator, access the subclass instance with the * or -> operators.
+		AShipModule* Module = *ActorItr;
+		if (IsValid(Module))
+		{
+			Module->UpdateModule();
+		}
+	}
+}
+
+
 //void UKismetProceduralMeshLibrary::ConvertQuadToTriangles(TArray<int32>& Triangles, int32 Vert0, int32 Vert1, int32 Vert2, int32 Vert3)
 
 //struct FST_GridTile& AGameModeBattle::GetGridTile(FVector WorldLocation)
@@ -139,7 +165,7 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 }
 
 
-AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, AShip* Buyer)
+AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip* Buyer)
 {
 	AShipModule* Module = nullptr;
 
@@ -154,6 +180,12 @@ AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> Mo
 	if (World)
 	{
 		Module = World->SpawnActor<AShipModule>(ModuleClass, Location, Rotation);
+		if (Module)
+		{
+			Module->CurrentState = EModuleState::STATE_FlyIn;
+			Module->FlyInDirection = Direction;
+		}
+		//Module->EModuleState
 
 		//World->SpawnActor<AShipModule>(ModuleClass, SpawnParameters);
 		//GunInstance = GetWorld()->SpawnActor<AGun>(TSubclassOf<AGun>(*(BlueprintLoader::Get().GetBP(FName("BP_2")))), spawnParams);

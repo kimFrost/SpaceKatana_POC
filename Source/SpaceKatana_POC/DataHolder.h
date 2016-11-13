@@ -33,6 +33,7 @@ enum class EShipModuleShape : uint8
 UENUM(BlueprintType)
 enum class EModuleState : uint8
 {
+	STATE_Static UMETA(DisplayName = "Static"),
 	STATE_Attached UMETA(DisplayName = "Attached"),
 	STATE_Destroyed UMETA(DisplayName = "Destroyed"),
 	STATE_FlyIn UMETA(DisplayName = "Flying in")

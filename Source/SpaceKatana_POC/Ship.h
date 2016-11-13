@@ -22,6 +22,12 @@ public:
 	AShipModule* RootModule;
 
 	UFUNCTION(BlueprintCallable, Category = "Ship")
+	AShipModule* AddModule(AShipModule* Module);
+
+	UFUNCTION(BlueprintCallable, Category = "Ship")
+	AShipModule* AddModuleOfClass(TSubclassOf<class AShipModule> ModuleClass, FVector WorldLocation, FRotator WorldRotation);
+
+	UFUNCTION(BlueprintCallable, Category = "Ship")
 	void UpdateModules();
 
 	UFUNCTION(BlueprintCallable, Category = "Ship")

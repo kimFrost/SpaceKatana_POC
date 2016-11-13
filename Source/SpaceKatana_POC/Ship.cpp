@@ -15,13 +15,52 @@ AShip::AShip()
 
 }
 
+/******************** AddModule *************************/
+AShipModule* AShip::AddModule(AShipModule* Module)
+{
+	AShipModule* AttachedModule = nullptr;
+
+	if (IsValid(Module))
+	{
+		//AddComponent(FName(""), false, FTransform(), NULL);
+
+		//this->AddComponent("ChildActor");
+		//Module->AttachToComponent();
+		Module->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, EAttachmentRule::KeepRelative, EAttachmentRule::KeepRelative, true), NAME_None);
+		Module->CurrentState = EModuleState::STATE_Attached;
+		/*
+		FVector Location = Module->GetActorLocation();
+		FRotator Rotation;
+
+		FActorSpawnParameters SpawnParameters;
+
+		UWorld* const World = GetWorld();
+		if (World)
+		{
+			AttachedModule = World->SpawnActor<AShipModule>(Module->GetClass(), Location, Rotation);
+		}
+		*/
+
+	}
+	return AttachedModule;
+}
+
+/******************** AddModuleOfClass *************************/
+AShipModule * AShip::AddModuleOfClass(TSubclassOf<class AShipModule> ModuleClass, FVector WorldLocation, FRotator WorldRotation)
+{
+
+	return nullptr;
+}
+
 
 /******************** UpdateModules *************************/
 void AShip::UpdateModules()
 {
 	Modules.Empty();
 
-	// Get all child modules of class
+
+	// Get all child modules of class (Modules are no longer child components, so this won't work)
+	/*
 	TArray<AActor*> ChildActors;
 	GetAllChildActors(ChildActors, false);
 	for (auto& Actor : ChildActors)
@@ -39,8 +78,12 @@ void AShip::UpdateModules()
 			}
 		}
 	}
+	*/
+
+
 
 	// Reset Modules
+	/*
 	for (auto& Module : Modules)
 	{
 		if (IsValid(Module))
@@ -48,6 +91,8 @@ void AShip::UpdateModules()
 			Module->bIsConnectedToRoot = false;
 			Module->bHasBeenUpdated = false;
 			Module->DistanceFromRoot = -1;
+
+			Module->CurrentState = EModuleState::STATE_Static;
 
 			if (Module->bIsDestroyed)
 			{
@@ -63,6 +108,7 @@ void AShip::UpdateModules()
 			}
 		}
 	}
+	*/
 
 
 	/*
@@ -77,11 +123,16 @@ void AShip::UpdateModules()
 	*/
 
 	//~~ Update all ship's modules connections ~~//
-	UpdateConnections();
+	//UpdateConnections(); // Done in game mode now
+
+	// A ship must always have a root module. If no root module, then not valid ship
+
 
 	//~~ If ship has a root module (MUST) (Maybe multiple in future) ~~//
-	if (RootModule)
+	if (IsValid(RootModule))
 	{
+		//RootModule->UpdateConnections(); // Done in game mode now
+
 		TMap<int32, TArray<AShipModule*>> ModuleRangeMap;
 		int MaxDistance = 100;
 
@@ -93,6 +144,7 @@ void AShip::UpdateModules()
 		VisitedModules.Add(RootModule); //~~ Add base to allready visited to prevent bounce back ~~//
 
 		RootModule->DistanceFromRoot = 0;
+		RootModule->CurrentState = EModuleState::STATE_Attached;
 
 		for (int32 k = 0; k < MaxDistance; k++)
 		{
@@ -120,6 +172,12 @@ void AShip::UpdateModules()
 						NeighborModule->bIsConnectedToRoot = true;
 						NeighborModule->DistanceFromRoot = k + 1;
 						NeighborModule->bHasBeenUpdated = true;
+						NeighborModule->CurrentState = EModuleState::STATE_Attached;
+						
+						//NeighborModule->UpdateConnections(); // Instead make the game mode update connections on every module in play. Better for handling modules that are not connected to a ship.
+						
+						Modules.Add(NeighborModule); // Add module to ship's modules array
+
 						ModuleRangeMap[k + 1].Add(NeighborModule); //~~ Add Neighbor module to the next frontier ~~//
 						VisitedModules.Add(NeighborModule); //~~ Add to visited, so that neighbors don't overlap each other. ~~//
 					}
@@ -135,6 +193,7 @@ void AShip::UpdateModules()
 
 	// Detach all that still are bIsConnectedToRoot == false (TODO)
 
+	/* Cannot not be connected to root, since modules no longer are chilren of ship
 	for (auto& Module : Modules)
 	{
 		if (IsValid(Module) && !Module->bIsConnectedToRoot)
@@ -142,11 +201,15 @@ void AShip::UpdateModules()
 			Module->DestroyModule();
 		}
 	}
+	*/
 }
 
 /******************** UpdateConnections *************************/
 void AShip::UpdateConnections()
 {
+	// Won't work since connection need to be update for us to get the list of modules
+	//!! Is done in game mode now instead !!//
+	/*/
 	for (auto& Module : Modules)
 	{
 		if (IsValid(Module))
@@ -154,6 +217,7 @@ void AShip::UpdateConnections()
 			Module->UpdateConnections();
 		}
 	}
+	*/
 }
 
 

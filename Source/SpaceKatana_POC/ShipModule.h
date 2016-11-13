@@ -49,6 +49,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	int DistanceFromRoot;
 
+	// Ship ref? // No. Just set the location and then the ship will find it though pathing??
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	TArray<AShipModuleConnector*> Connectors;
@@ -58,6 +59,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Ship")
 	void DestroyModule();
+
+	UFUNCTION(BlueprintCallable, Category = "Ship")
+	void UpdateModule();
 
 	UFUNCTION(BlueprintCallable, Category = "Ship")
 	void UpdateConnections();

@@ -46,6 +46,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Grid)
 	FVector2D WorldLocationToCoords(FVector WorldLocation, bool bRoundOutOfBounds);
 
+	UFUNCTION(BlueprintCallable, Category = Ship)
+	void UpdateAllModules();
 
 	//struct FST_GridTile& GetGridTile(FVector WorldLocation);
 	UFUNCTION(BlueprintCallable, Category = Grid)
@@ -53,7 +55,7 @@ public:
 	//void GetGridTile(UPARAM(ref) FST_GridTile& GridTile, FVector WorldLocation);
 
 	UFUNCTION(BlueprintCallable, Category = Grid)
-	AShipModule* SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, AShip* Buyer);
+	AShipModule* SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip* Buyer);
 
 	bool IsValidShipLocation(AShip* Ship, FVector WorldLocation);
 
