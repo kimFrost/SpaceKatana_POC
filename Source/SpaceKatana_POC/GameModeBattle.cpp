@@ -16,6 +16,7 @@ AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : 
 	GridSizeX = 20;
 	GridSizeY = 15;
 	GridTileSize = 100.f;
+	CurrentStep = ETurnStep::Planning;
 }
 
 
@@ -98,6 +99,29 @@ void AGameModeBattle::UpdateAllModules()
 			Module->UpdateModule();
 		}
 	}
+}
+
+
+/******************** ProgressTurnStep *************************/
+ETurnStep AGameModeBattle::ProgressTurnStep()
+{
+	if (CurrentStep == ETurnStep::Planning)
+	{
+		CurrentStep = ETurnStep::Moving;
+	}
+	else if (CurrentStep == ETurnStep::Moving)
+	{
+		CurrentStep = ETurnStep::Shooting;
+	}
+	else if (CurrentStep == ETurnStep::Shooting)
+	{
+		CurrentStep = ETurnStep::SpawningModules;
+	}
+	else if (CurrentStep == ETurnStep::SpawningModules)
+	{
+		CurrentStep = ETurnStep::Planning;
+	}
+	return CurrentStep;
 }
 
 

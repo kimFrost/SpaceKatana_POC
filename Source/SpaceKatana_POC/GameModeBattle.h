@@ -37,6 +37,10 @@ public:
 	TArray<UGridTile*> GridTiles;
 	//TArray<FST_GridTile> GridTiles;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
+	ETurnStep CurrentStep;
+
+
 	UFUNCTION(BlueprintCallable, Category = Grid)
 	void ConstructGrid();
 
@@ -48,6 +52,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Ship)
 	void UpdateAllModules();
+
+	UFUNCTION(BlueprintCallable, Category = Turn)
+	ETurnStep ProgressTurnStep();
 
 	//struct FST_GridTile& GetGridTile(FVector WorldLocation);
 	UFUNCTION(BlueprintCallable, Category = Grid)

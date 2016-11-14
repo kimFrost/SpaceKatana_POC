@@ -46,6 +46,16 @@ enum class EShipMessage : uint8
 	MSG_Reset UMETA(DisplayName = "Reset")
 };
 
+UENUM(BlueprintType)
+enum class ETurnStep : uint8
+{
+	Planning UMETA(DisplayName = "Planning"),
+	Moving UMETA(DisplayName = "Moving"),
+	Shooting UMETA(DisplayName = "Shooting"),
+	SpawningModules UMETA(DisplayName = "SpawningModules")
+};
+
+
 
 
 //~~~~~ STRUCTS ~~~~~//
