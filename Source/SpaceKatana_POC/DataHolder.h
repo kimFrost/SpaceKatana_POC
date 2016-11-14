@@ -55,6 +55,13 @@ enum class ETurnStep : uint8
 	SpawningModules UMETA(DisplayName = "SpawningModules")
 };
 
+UENUM(BlueprintType)
+enum class EOrderType : uint8
+{
+	MoveShip UMETA(DisplayName = "MoveShip"),
+	Shoot UMETA(DisplayName = "Shoot"),
+	SpawnModule UMETA(DisplayName = "SpawnModule")
+};
 
 
 
