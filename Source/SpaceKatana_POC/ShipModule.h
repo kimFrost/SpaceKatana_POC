@@ -66,6 +66,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Ship")
 	void UpdateConnections();
 
+	// Init module function
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Ship")
+	void InitModule();
 
 	UPROPERTY(BlueprintAssignable, Category = "Input")
 	FShipModuleDestroyed OnShipModuleDestroyed;

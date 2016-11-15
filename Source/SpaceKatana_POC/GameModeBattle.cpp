@@ -195,10 +195,15 @@ AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> Mo
 
 	FVector Location = CoordsToWorldLocation(X, Y) + FVector(GridTileSize / 2, GridTileSize / 2, 0);
 	FRotator Rotation;
+	Rotation.Yaw = 0;
+	Rotation.Pitch = 0;
+	Rotation.Roll = 0;
 
-	//Module = World->SpawnActor<YourClass>(BlueprintVar, SpawnLocation, SpawnRotation);
+	Location = Location - (Direction * 2000); 
+	Location.Z = 0;
 
 	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.bNoCollisionFail = true;
 
 	UWorld* const World = GetWorld();
 	if (World)
@@ -208,6 +213,7 @@ AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> Mo
 		{
 			Module->CurrentState = EModuleState::STATE_FlyIn;
 			Module->FlyInDirection = Direction;
+			Module->InitModule();
 		}
 		//Module->EModuleState
 

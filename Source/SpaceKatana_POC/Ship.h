@@ -21,6 +21,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	AShipModule* RootModule;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	float Funds;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	float Income;
+
+	// Orders from planning stored in ship?
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	//TArray<FST_Order> Orders;
+
 	UFUNCTION(BlueprintCallable, Category = "Ship")
 	AShipModule* AddModule(AShipModule* Module);
 

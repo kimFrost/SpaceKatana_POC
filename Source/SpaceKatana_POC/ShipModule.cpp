@@ -106,6 +106,11 @@ void AShipModule::UpdateConnections()
 	// Pass self and list to connected module?
 }
 
+void AShipModule::InitModule_Implementation()
+{
+
+}
+
 // Called when the game starts or when spawned
 void AShipModule::BeginPlay()
 {

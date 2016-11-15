@@ -63,6 +63,12 @@ enum class EOrderType : uint8
 	SpawnModule UMETA(DisplayName = "SpawnModule")
 };
 
+UENUM(BlueprintType)
+enum class EToolType : uint8
+{
+	Select UMETA(DisplayName = "Select"),
+	SpawnModule UMETA(DisplayName = "SpawnModule")
+};
 
 
 //~~~~~ STRUCTS ~~~~~//
@@ -147,8 +153,6 @@ public:
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	//FST_ShipModule TestStruct;
 };
-
-
 
 
 

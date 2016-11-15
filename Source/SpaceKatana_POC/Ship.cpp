@@ -12,6 +12,8 @@ AShip::AShip()
 	PrimaryActorTick.bCanEverTick = true;
 
 	RootModule = nullptr;
+	Funds = 0.f;
+	Income = 0.f;
 
 }
 
@@ -28,6 +30,11 @@ AShipModule* AShip::AddModule(AShipModule* Module)
 		//Module->AttachToComponent();
 		Module->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, EAttachmentRule::KeepRelative, EAttachmentRule::KeepRelative, true), NAME_None);
 		Module->CurrentState = EModuleState::STATE_Attached;
+		UStaticMeshComponent* RootMesh = Cast<UStaticMeshComponent>(Module->GetRootComponent());
+		if (RootMesh)
+		{
+			RootMesh->SetSimulatePhysics(false);
+		}
 		/*
 		FVector Location = Module->GetActorLocation();
 		FRotator Rotation;
