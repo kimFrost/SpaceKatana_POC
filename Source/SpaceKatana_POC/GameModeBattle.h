@@ -12,6 +12,7 @@
 class AShip;
 class AShipModule;
 class UGridTile;
+class UOrder;
 
 
 UCLASS()
@@ -32,13 +33,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	float GridTileSize;
 
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	TArray<UGridTile*> GridTiles;
 	//TArray<FST_GridTile> GridTiles;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	ETurnStep CurrentStep;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	TArray<UOrder*> Orders;
+
+
+	UFUNCTION(BlueprintCallable, Category = "Order")
+	UOrder* AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip* Buyer);
 
 
 	UFUNCTION(BlueprintCallable, Category = Grid)

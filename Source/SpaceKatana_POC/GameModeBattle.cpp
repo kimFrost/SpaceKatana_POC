@@ -21,6 +21,13 @@ AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : 
 
 
 
+
+UOrder* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip * Buyer)
+{
+	return nullptr;
+}
+
+
 void AGameModeBattle::ConstructGrid()
 {
 
@@ -203,7 +210,7 @@ AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> Mo
 	Location.Z = 0;
 
 	FActorSpawnParameters SpawnParameters;
-	SpawnParameters.bNoCollisionFail = true;
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	UWorld* const World = GetWorld();
 	if (World)
