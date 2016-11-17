@@ -43,9 +43,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	TArray<UOrder*> Orders;
 
+	TSubclassOf<class AOrderVisualizer> OrderVisulizerBlueprint;
 
 	UFUNCTION(BlueprintCallable, Category = "Order")
-	UOrder* AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip* Buyer);
+	UOrderSpawnModule* AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip* Buyer);
 
 
 	UFUNCTION(BlueprintCallable, Category = Grid)

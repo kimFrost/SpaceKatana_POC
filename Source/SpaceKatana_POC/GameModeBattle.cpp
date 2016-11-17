@@ -6,6 +6,8 @@
 #include "Ship.h"
 #include "ShipModule.h"
 #include "GridTile.h"
+#include "Orders/OrderSpawnModule.h"
+#include "Orders/OrderVisualizer.h"
 #include "GameModeBattle.h"
 
 
@@ -17,14 +19,44 @@ AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : 
 	GridSizeY = 15;
 	GridTileSize = 100.f;
 	CurrentStep = ETurnStep::Planning;
+
+	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemBlueprint(TEXT("Blueprint'/Game/SpaceKatana/Blueprints/BP_OrderVisualizer.BP_OrderVisualizer'"));
+	if (ItemBlueprint.Object) {
+		OrderVisulizerBlueprint = (UClass*)ItemBlueprint.Object->GeneratedClass;
+	}
 }
 
 
 
 
-UOrder* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip * Buyer)
+UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip * Buyer)
 {
-	return nullptr;
+	UOrderSpawnModule* Order = NewObject<UOrderSpawnModule>();
+	if (Order) 
+	{
+		Order->ModuleClassToSpawn = ModuleClass;
+		Order->FlyInDirection = Direction;
+		Order->X = X;
+		Order->Y = Y;
+		Order->OrderLocation = CoordsToWorldLocation(X, Y);
+
+		FActorSpawnParameters SpawnParameters;
+		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		UWorld* const World = GetWorld();
+		if (World)
+		{
+			//AItem* DroppedItem = World->SpawnActor<ASurItem>(MyItemBlueprint, Location, Rotation, SpawnParams);
+			//AOrderVisualizer* OrderVisualizer = World->SpawnActor<AOrderVisualizer>(ModuleClass, Order->OrderLocation, FRotator());
+			AOrderVisualizer* OrderVisualizer = World->SpawnActor<AOrderVisualizer>(OrderVisulizerBlueprint, Order->OrderLocation, FRotator());
+			if (OrderVisualizer)
+			{
+				OrderVisualizer->OrderType = EOrderType::SpawnModule; // Might be redundant. The Order can't be cast instead
+				OrderVisualizer->Order = Order;
+			}
+		}
+	}
+	return Order;
 }
 
 

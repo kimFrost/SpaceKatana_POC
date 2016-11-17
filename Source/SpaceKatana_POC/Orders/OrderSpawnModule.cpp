@@ -10,7 +10,7 @@
 UOrderSpawnModule::UOrderSpawnModule()
 {
 	//StoredShipModule = nullptr;
-
+	FlyInDirection = FVector(1.f, 0.f, 0.f);
 }
 
 

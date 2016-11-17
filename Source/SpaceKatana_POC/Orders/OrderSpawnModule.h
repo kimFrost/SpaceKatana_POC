@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class SPACEKATANA_POC_API UOrderSpawnModule : public UOrder
 {
 	GENERATED_BODY()
@@ -17,9 +17,11 @@ class SPACEKATANA_POC_API UOrderSpawnModule : public UOrder
 public:
 	UOrderSpawnModule();
 	~UOrderSpawnModule();
-	
-	//FVector FlyInDirection;
 
+	TSubclassOf<class AShipModule> ModuleClassToSpawn;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	FVector FlyInDirection;
 
 
 };

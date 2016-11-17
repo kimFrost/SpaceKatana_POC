@@ -8,11 +8,11 @@
 
 
 //~~~~~ FORWARD DECLATIONS ~~~~~//
-//class AShip;
+class AShip;
 
 
 
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class SPACEKATANA_POC_API UOrder : public UObject
 {
 	GENERATED_BODY()
@@ -21,17 +21,22 @@ public:
 	UOrder();
 	~UOrder();
 
-	//AShip* Commander;
+	AShip* Buyer;
 
-	//float Cost;
+	float Cost;
+
+	int TurnExcTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	int TurnsLeft;
+
+	int X;
+
+	int Y;
+
+	FVector OrderLocation;
 
 	//EResource CostType;
-
-	//int TurnExcTime;
-
-	//int TurnsLeft;
-
-	//FVector OrderLocation;
 
 
 	

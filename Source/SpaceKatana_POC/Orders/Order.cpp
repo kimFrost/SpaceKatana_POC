@@ -11,8 +11,13 @@
 
 UOrder::UOrder()
 {
-	//StoredShipModule = nullptr;
-
+	Buyer = nullptr;
+	Cost = 100.f;
+	TurnExcTime = 1;
+	TurnsLeft = TurnExcTime;
+	OrderLocation = FVector(0.f, 0.f, 0.f);
+	X = 0;
+	Y = 0;
 }
 
 
