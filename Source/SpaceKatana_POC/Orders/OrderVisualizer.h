@@ -22,8 +22,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	UOrder* Order;
 
+
+private:
 	UFUNCTION(BlueprintCallable, Category = "Order")
-	void RemoveVisualizer();
+	void OnOrderResolved();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

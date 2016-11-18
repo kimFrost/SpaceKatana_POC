@@ -16,9 +16,9 @@ AOrderVisualizer::AOrderVisualizer()
 
 
 
-void AOrderVisualizer::RemoveVisualizer()
+void AOrderVisualizer::OnOrderResolved()
 {
-
+	Destroy();
 }
 
 
@@ -40,6 +40,7 @@ void AOrderVisualizer::BeginPlay()
 
 		//Order->OnOrderResolved.AddDynamic(this, &AOrderVisualizer::Destroy);
 		//Order->OnOrderResolved.AddDynamic(this, &AOrderVisualizer::RemoveVisualizer);
+		Order->OnOrderResolved.AddUniqueDynamic(this, &AOrderVisualizer::OnOrderResolved);
 	}
 }
 

@@ -12,8 +12,8 @@ class AShip;
 
 //~~~~~ Delegates/Event dispatcher ~~~~~//
 //DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTimeUpdated, float, Time, float, TimeProgressed);
-//DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOrderResolved);
-DECLARE_DYNAMIC_DELEGATE(FOrderResolved);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOrderResolved);
+//DECLARE_DYNAMIC_DELEGATE(FOrderResolved);
 //DECLARE_EVENT_OneParam( UActionManager, FEventSignature, AActor* )
 //DECLARE_EVENT(FOrderResolved, EventName)
 
