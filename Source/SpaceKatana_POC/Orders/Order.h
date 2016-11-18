@@ -10,6 +10,12 @@
 //~~~~~ FORWARD DECLATIONS ~~~~~//
 class AShip;
 
+//~~~~~ Delegates/Event dispatcher ~~~~~//
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTimeUpdated, float, Time, float, TimeProgressed);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOrderResolved);
+DECLARE_DYNAMIC_DELEGATE(FOrderResolved);
+//DECLARE_EVENT_OneParam( UActionManager, FEventSignature, AActor* )
+//DECLARE_EVENT(FOrderResolved, EventName)
 
 
 UCLASS(Blueprintable, BlueprintType)
@@ -38,12 +44,10 @@ public:
 
 	//EResource CostType;
 
+	UFUNCTION(BlueprintCallable, Category = "Order")
+	void ResolveOrder();
 
+	UPROPERTY(BlueprintAssignable, Category = "Order")
+	FOrderResolved OnOrderResolved;
 	
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
-	//AShipModule* StoredShipModule;
-
-	//UFUNCTION(BlueprintCallable, Category = Grid)
-	//bool RegisterOnTile(AShipModule* ShipModule);
-
 };

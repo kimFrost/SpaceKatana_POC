@@ -35,6 +35,7 @@ enum class EModuleState : uint8
 {
 	STATE_Static UMETA(DisplayName = "Static"),
 	STATE_Attached UMETA(DisplayName = "Attached"),
+	STATE_PendingDestroy UMETA(DisplayName = "PendingDestroy"),
 	STATE_Destroyed UMETA(DisplayName = "Destroyed"),
 	STATE_FlyIn UMETA(DisplayName = "Flying in")
 };
@@ -52,7 +53,8 @@ enum class ETurnStep : uint8
 	Planning UMETA(DisplayName = "Planning"),
 	Moving UMETA(DisplayName = "Moving"),
 	Shooting UMETA(DisplayName = "Shooting"),
-	SpawningModules UMETA(DisplayName = "SpawningModules")
+	SpawningModules UMETA(DisplayName = "SpawningModules"),
+	Maneuvering UMETA(DisplayName = "Maneuvering")
 };
 
 UENUM(BlueprintType)

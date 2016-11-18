@@ -14,11 +14,33 @@ AOrderVisualizer::AOrderVisualizer()
 	Order = nullptr;
 }
 
+
+
+void AOrderVisualizer::RemoveVisualizer()
+{
+
+}
+
+
 // Called when the game starts or when spawned
 void AOrderVisualizer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (IsValid(Order)) 
+	{
+		//FTimerDelegate TimerDel;
+		//TimerDel.BindUFunction(this, FName("Destroy"), false, false);
+
+		/*
+		FScriptDelegate ScriptDel;
+		ScriptDel.BindUFunction(this, FName("Destroy"));
+		Order->OnOrderResolved.Add(ScriptDel);
+		*/
+
+		//Order->OnOrderResolved.AddDynamic(this, &AOrderVisualizer::Destroy);
+		//Order->OnOrderResolved.AddDynamic(this, &AOrderVisualizer::RemoveVisualizer);
+	}
 }
 
 // Called every frame
