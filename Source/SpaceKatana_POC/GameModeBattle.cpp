@@ -38,17 +38,19 @@ UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShip
 		Order->FlyInDirection = Direction;
 		Order->X = X;
 		Order->Y = Y;
-		Order->OrderLocation = CoordsToWorldLocation(X, Y);
+		Order->OrderLocation = CoordsToWorldLocation(X, Y) + FVector(GridTileSize / 2, GridTileSize / 2, 0); // Add half grid size??
 
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		FRotator Rotation = Direction.Rotation();
 
 		UWorld* const World = GetWorld();
 		if (World)
 		{
 			//AItem* DroppedItem = World->SpawnActor<ASurItem>(MyItemBlueprint, Location, Rotation, SpawnParams);
 			//AOrderVisualizer* OrderVisualizer = World->SpawnActor<AOrderVisualizer>(ModuleClass, Order->OrderLocation, FRotator());
-			AOrderVisualizer* OrderVisualizer = World->SpawnActor<AOrderVisualizer>(OrderVisulizerBlueprint, Order->OrderLocation, FRotator());
+			AOrderVisualizer* OrderVisualizer = World->SpawnActor<AOrderVisualizer>(OrderVisulizerBlueprint, Order->OrderLocation, Rotation);
 			if (OrderVisualizer)
 			{
 				OrderVisualizer->OrderType = EOrderType::SpawnModule; // Might be redundant. The Order can't be cast instead

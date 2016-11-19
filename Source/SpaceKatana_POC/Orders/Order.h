@@ -40,6 +40,7 @@ public:
 
 	int Y;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	FVector OrderLocation;
 
 	//EResource CostType;

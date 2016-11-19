@@ -18,6 +18,7 @@ public:
 	UOrderSpawnModule();
 	~UOrderSpawnModule();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	TSubclassOf<class AShipModule> ModuleClassToSpawn;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
