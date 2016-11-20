@@ -24,6 +24,8 @@ public:
 	// Sets default values for this actor's properties
 	AGameModeBattle(const FObjectInitializer &ObjectInitializer);
 	
+	// Settings
+
 
 	//Grid
 
@@ -40,7 +42,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	ETurnStep CurrentStep;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	TArray<UOrder*> Orders;
 
 	TSubclassOf<class AOrderVisualizer> OrderVisulizerBlueprint;

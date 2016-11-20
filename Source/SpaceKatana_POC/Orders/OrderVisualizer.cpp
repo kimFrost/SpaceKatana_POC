@@ -2,6 +2,8 @@
 
 #include "SpaceKatana_POC.h"
 #include "DataHolder.h"
+#include "GameModeBattle.h"
+#include "OrderSpawnModule.h"
 #include "OrderVisualizer.h"
 
 
@@ -16,18 +18,9 @@ AOrderVisualizer::AOrderVisualizer()
 
 
 
-void AOrderVisualizer::OnOrderResolved()
+void AOrderVisualizer::Init()
 {
-	Destroy();
-}
-
-
-// Called when the game starts or when spawned
-void AOrderVisualizer::BeginPlay()
-{
-	Super::BeginPlay();
-	
-	if (IsValid(Order)) 
+	if (IsValid(Order))
 	{
 		//FTimerDelegate TimerDel;
 		//TimerDel.BindUFunction(this, FName("Destroy"), false, false);
@@ -42,6 +35,37 @@ void AOrderVisualizer::BeginPlay()
 		//Order->OnOrderResolved.AddDynamic(this, &AOrderVisualizer::RemoveVisualizer);
 		Order->OnOrderResolved.AddUniqueDynamic(this, &AOrderVisualizer::OnOrderResolved);
 	}
+}
+
+void AOrderVisualizer::OnOrderResolved()
+{
+	if (IsValid(Order))
+	{
+		AGameModeBattle* GameMode = Cast<AGameModeBattle>(GetWorld()->GetAuthGameMode());
+		if (GameMode)
+		{
+			UOrderSpawnModule* SpawnOrder = Cast<UOrderSpawnModule>(Order);
+			if (SpawnOrder)
+			{
+				GameMode->SpawnFlyInModule(SpawnOrder->ModuleClassToSpawn, SpawnOrder->X, SpawnOrder->Y, SpawnOrder->FlyInDirection, SpawnOrder->Buyer);
+			}
+			else 
+			{
+				
+			}
+		}
+	}
+
+	Destroy();
+}
+
+
+// Called when the game starts or when spawned
+void AOrderVisualizer::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	
 }
 
 // Called every frame

@@ -30,6 +30,6 @@ UOrder::~UOrder()
 void UOrder::ResolveOrder()
 {
 	OnOrderResolved.Broadcast();
-
 	// Remove self
+	//ConditionalBeginDestroy();
 }

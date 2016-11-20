@@ -2,6 +2,7 @@
 
 #include "SpaceKatana_POC.h"
 #include "DataHolder.h"
+#include "GameModeBattle.h"
 #include "OrderSpawnModule.h"
 
 
@@ -17,4 +18,20 @@ UOrderSpawnModule::UOrderSpawnModule()
 UOrderSpawnModule::~UOrderSpawnModule()
 {
 
+}
+
+
+// Called when the game starts or when spawned
+void UOrderSpawnModule::ResolveOrder()
+{
+	Super::ResolveOrder();
+
+	//!! UObject can't GetWorld Safely without path !!//
+	/*
+	AGameModeBattle* GameMode = Cast<AGameModeBattle>(GetWorld()->GetAuthGameMode());
+	if (GameMode)
+	{
+		GameMode->SpawnFlyInModule(ModuleClassToSpawn, X, Y, FlyInDirection, Buyer);
+	}
+	*/
 }

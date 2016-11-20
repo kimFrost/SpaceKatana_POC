@@ -46,7 +46,7 @@ public:
 	//EResource CostType;
 
 	UFUNCTION(BlueprintCallable, Category = "Order")
-	void ResolveOrder();
+	virtual void ResolveOrder();
 
 	UPROPERTY(BlueprintAssignable, Category = "Order")
 	FOrderResolved OnOrderResolved;

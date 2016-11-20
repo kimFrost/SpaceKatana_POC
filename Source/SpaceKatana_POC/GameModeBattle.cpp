@@ -39,6 +39,7 @@ UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShip
 		Order->X = X;
 		Order->Y = Y;
 		Order->OrderLocation = CoordsToWorldLocation(X, Y) + FVector(GridTileSize / 2, GridTileSize / 2, 0); // Add half grid size??
+		//Order->OnOrderResolved.AddDynamic();
 
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -55,8 +56,10 @@ UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShip
 			{
 				OrderVisualizer->OrderType = EOrderType::SpawnModule; // Might be redundant. The Order can't be cast instead
 				OrderVisualizer->Order = Order;
+				OrderVisualizer->Init();
 			}
 		}
+		Orders.Add(Order);
 	}
 	return Order;
 }
@@ -159,6 +162,10 @@ ETurnStep AGameModeBattle::ProgressTurnStep()
 		CurrentStep = ETurnStep::SpawningModules;
 	}
 	else if (CurrentStep == ETurnStep::SpawningModules)
+	{
+		CurrentStep = ETurnStep::Maneuvering;
+	}
+	else if (CurrentStep == ETurnStep::Maneuvering)
 	{
 		CurrentStep = ETurnStep::Planning;
 	}

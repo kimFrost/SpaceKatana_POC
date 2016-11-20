@@ -24,5 +24,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	FVector FlyInDirection;
 
+	// Called when the order gets resolved
+	virtual void ResolveOrder() override;
+
 
 };

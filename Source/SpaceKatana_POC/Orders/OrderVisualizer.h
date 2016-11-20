@@ -22,6 +22,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	UOrder* Order;
 
+	UFUNCTION(BlueprintCallable, Category = "Order")
+	void Init();
+
 
 private:
 	UFUNCTION(BlueprintCallable, Category = "Order")
