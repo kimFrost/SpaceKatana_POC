@@ -24,6 +24,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	FVector FlyInDirection;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	FVector TracedTargetDestination;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	int TracedTargetX;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	int TracedTargetY;
+
 	// Called when the order gets resolved
 	virtual void ResolveOrder() override;
 
