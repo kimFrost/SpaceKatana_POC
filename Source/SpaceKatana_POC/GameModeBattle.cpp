@@ -40,6 +40,7 @@ UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShip
 		Order->Y = Y;
 		Order->OrderLocation = CoordsToWorldLocation(X, Y) + FVector(GridTileSize / 2, GridTileSize / 2, 0); // Add half grid size??
 		//Order->OnOrderResolved.AddDynamic();
+		Order->WorldRef = GetWorld();
 
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;

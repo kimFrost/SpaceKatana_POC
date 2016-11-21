@@ -22,6 +22,9 @@ public:
 	TSubclassOf<class AShipModule> ModuleClassToSpawn;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	AShipModule* SpawnedModule;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	FVector FlyInDirection;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
@@ -33,6 +36,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	int TracedTargetY;
 
+	UFUNCTION(BlueprintCallable, Category = "Order")
+	void SpawnModule();
+
+	UFUNCTION(BlueprintCallable, Category = "Order")
+	void TraceProjection();
+
+private:
 	// Called when the order gets resolved
 	virtual void ResolveOrder() override;
 

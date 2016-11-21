@@ -45,6 +45,9 @@ public:
 
 	//EResource CostType;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	UWorld* WorldRef;
+
 	UFUNCTION(BlueprintCallable, Category = "Order")
 	virtual void ResolveOrder();
 

@@ -34,11 +34,18 @@ void AOrderVisualizer::Init()
 		//Order->OnOrderResolved.AddDynamic(this, &AOrderVisualizer::Destroy);
 		//Order->OnOrderResolved.AddDynamic(this, &AOrderVisualizer::RemoveVisualizer);
 		Order->OnOrderResolved.AddUniqueDynamic(this, &AOrderVisualizer::OnOrderResolved);
+
+		UOrderSpawnModule* SpawnOrder = Cast<UOrderSpawnModule>(Order);
+		if (SpawnOrder)
+		{
+			SpawnOrder->TraceProjection();
+		}
 	}
 }
 
 void AOrderVisualizer::OnOrderResolved()
 {
+	/*
 	if (IsValid(Order))
 	{
 		AGameModeBattle* GameMode = Cast<AGameModeBattle>(GetWorld()->GetAuthGameMode());
@@ -55,6 +62,7 @@ void AOrderVisualizer::OnOrderResolved()
 			}
 		}
 	}
+	*/
 
 	Destroy();
 }
