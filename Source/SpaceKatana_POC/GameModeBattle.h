@@ -73,7 +73,7 @@ public:
 	//void GetGridTile(UPARAM(ref) FST_GridTile& GridTile, FVector WorldLocation);
 
 	UFUNCTION(BlueprintCallable, Category = Grid)
-	AShipModule* SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip* Buyer);
+	AShipModule* SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, FVector Target, AShip* Buyer);
 
 	bool IsValidShipLocation(AShip* Ship, FVector WorldLocation);
 

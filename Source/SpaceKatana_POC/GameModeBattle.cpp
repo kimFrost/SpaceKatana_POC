@@ -238,7 +238,7 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 }
 
 
-AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip* Buyer)
+AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, FVector Target, AShip* Buyer)
 {
 	AShipModule* Module = nullptr;
 
@@ -262,6 +262,7 @@ AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> Mo
 		{
 			Module->CurrentState = EModuleState::STATE_FlyIn;
 			Module->FlyInDirection = Direction;
+			Module->TargetMoveTo = Target;
 			Module->InitModule();
 		}
 		//Module->EModuleState

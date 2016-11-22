@@ -35,7 +35,7 @@ void UOrderSpawnModule::SpawnModule()
 		AGameModeBattle* GameMode = Cast<AGameModeBattle>(WorldRef->GetAuthGameMode());
 		if (GameMode)
 		{
-			SpawnedModule = GameMode->SpawnFlyInModule(ModuleClassToSpawn, X, Y, FlyInDirection, Buyer);
+			SpawnedModule = GameMode->SpawnFlyInModule(ModuleClassToSpawn, X, Y, FlyInDirection, FVector(), Buyer);
 		}
 	}
 }
@@ -217,8 +217,15 @@ void UOrderSpawnModule::TraceProjection()
 void UOrderSpawnModule::ResolveOrder()
 {
 	Super::ResolveOrder();
+
+	if (IsValid(SpawnedModule))
+	{
+		SpawnedModule->TargetMoveTo = TracedTargetLocation;
+	}
 	
 	//SpawnModule();
+
+	// Set Module 
 
 	//!! UObject can't GetWorld Safely without path !!//
 	/*

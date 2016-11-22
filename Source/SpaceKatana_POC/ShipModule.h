@@ -49,6 +49,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	int DistanceFromRoot;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	FVector TargetMoveTo;
+
 	// Ship ref? // No. Just set the location and then the ship will find it though pathing??
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
