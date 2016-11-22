@@ -39,13 +39,15 @@ void UOrderSpawnModule::SpawnModule()
 
 void UOrderSpawnModule::TraceProjection()
 {
+	DEBUG_TracedLocations.Empty();
+
 	if (SpawnedModule == nullptr)
 	{
 		SpawnModule();
 	}
 	if (IsValid(SpawnedModule) && WorldRef)
 	{
-		//FVector StartLocation = SpawnedModule->GetActorLocation();
+		FVector StartLocation = SpawnedModule->GetActorLocation();
 		float GridTileSize = 100.f;
 		
 		AGameModeBattle* GameMode = Cast<AGameModeBattle>(WorldRef->GetAuthGameMode());
@@ -65,6 +67,12 @@ void UOrderSpawnModule::TraceProjection()
 				
 				FVector Location = Connector->GetActorLocation() + (GridTileSize * i * FlyInDirection);
 				
+
+
+				// Trace for crash collision first, and then connectors?
+
+
+
 				//FCollisionQueryParams TraceParams(FName(TEXT("Hit Trace")), true, ActorToIgnore);
 				FCollisionQueryParams RV_TraceParams = FCollisionQueryParams(FName(TEXT("RV_Trace")), true);
 
@@ -88,6 +96,8 @@ void UOrderSpawnModule::TraceProjection()
 					RV_TraceParams, ExtraParams
 				);
 
+				DEBUG_TracedLocations.Add(LineTraceFrom);
+
 				for (auto& HitItem : HitOut)
 				{
 					AActor* HitActor = HitItem.GetActor();
@@ -105,6 +115,9 @@ void UOrderSpawnModule::TraceProjection()
 						}
 					}
 				}
+
+				// Trace for module blocking forward. Collision warning
+
 
 				/*
 				WorldRef->LineTraceSingleByChannel(RV_Hit, LineTraceFrom, LineTraceTo, ECC_GameTraceChannel2, RV_TraceParams);

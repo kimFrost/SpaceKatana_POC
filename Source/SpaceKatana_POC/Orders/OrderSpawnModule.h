@@ -36,11 +36,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	int TracedTargetY;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	TArray<FVector> DEBUG_TracedLocations;
+
+
 	UFUNCTION(BlueprintCallable, Category = "Order")
 	void SpawnModule();
 
 	UFUNCTION(BlueprintCallable, Category = "Order")
 	void TraceProjection();
+
 
 private:
 	// Called when the order gets resolved
