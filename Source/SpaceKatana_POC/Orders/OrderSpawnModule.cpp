@@ -15,6 +15,10 @@ UOrderSpawnModule::UOrderSpawnModule()
 	//StoredShipModule = nullptr;
 	FlyInDirection = FVector(1.f, 0.f, 0.f);
 	SpawnedModule = nullptr;
+	TracedTargetLocation = FVector();
+	TracedTargetConnectorLocation = FVector();
+	bModuleCollisionDanger = false;
+	bValidAttachHit = false;
 }
 
 
@@ -40,6 +44,8 @@ void UOrderSpawnModule::SpawnModule()
 void UOrderSpawnModule::TraceProjection()
 {
 	DEBUG_TracedLocations.Empty();
+	bValidAttachHit = false;
+	bModuleCollisionDanger = false;
 
 	if (SpawnedModule == nullptr)
 	{
@@ -59,38 +65,66 @@ void UOrderSpawnModule::TraceProjection()
 		// Loop tiles in directions (row/column)
 		for (int i = 1; i < 30; i++)
 		{
+			FVector TraceLocation = SpawnedModule->GetActorLocation() + (GridTileSize * i * FlyInDirection);
+
 			for (auto& Connector : SpawnedModule->Connectors)
 			{
 				if (!IsValid(Connector)) {
 					return;
 				}
 				
-				FVector Location = Connector->GetActorLocation() + (GridTileSize * i * FlyInDirection);
+				FVector ConnectorLocation = Connector->GetActorLocation() + (GridTileSize * i * FlyInDirection);
 				
-
+				// Trace in Location for module Use GridTileSize * 0.45 for radius for best chance of hitting any type of module
 
 				// Trace for crash collision first, and then connectors?
 
 
-
-				//FCollisionQueryParams TraceParams(FName(TEXT("Hit Trace")), true, ActorToIgnore);
 				FCollisionQueryParams RV_TraceParams = FCollisionQueryParams(FName(TEXT("RV_Trace")), true);
 
 				RV_TraceParams.bTraceComplex = true;
 				RV_TraceParams.bTraceAsyncScene = true;
 				RV_TraceParams.bReturnPhysicalMaterial = false;
 
-				//~~ Re-initialize hit info ~~//
-				FHitResult RV_Hit(ForceInit);
+				FHitResult RV_Hit(ForceInit); //~~ Re-initialize hit info ~~//
 
-				FVector LineTraceFrom = Location + FVector{ 0.f, 0.f, 10.f };
-				FVector LineTraceTo = Location - FVector{ 0.f, 0.f, 10.f };
+				//~~ Module trace for collision danger ~~//
 
-				TArray<FHitResult> HitOut;
+				FVector LineTraceFrom = TraceLocation + FVector{ 0.f, 0.f, 1.f };
+				FVector LineTraceTo = TraceLocation - FVector{ 0.f, 0.f, 1.f };
+				TArray<FHitResult> HitOutModule;
 				FCollisionResponseParams ExtraParams;
 
+				WorldRef->SweepMultiByChannel(
+					HitOutModule, LineTraceFrom, LineTraceTo,
+					FQuat::Identity, ECC_Visibility,
+					FCollisionShape::MakeSphere(GridTileSize * 0.45),
+					RV_TraceParams, ExtraParams
+				);
+
+				for (auto& HitItem : HitOutModule)
+				{
+					AActor* HitActor = HitItem.GetActor();
+					if (HitActor)
+					{
+						AShipModule* Module = Cast<AShipModule>(HitActor);
+						if (Module && Module->CurrentState == EModuleState::STATE_Attached)
+						{
+							bModuleCollisionDanger = true;
+							TracedTargetLocation = TraceLocation;
+							return;
+						}
+					}
+				}
+
+				//~~ Connector trace for attach ~~//
+
+				LineTraceFrom = ConnectorLocation + FVector{ 0.f, 0.f, 1.f };
+				LineTraceTo = ConnectorLocation - FVector{ 0.f, 0.f, 1.f };
+				TArray<FHitResult> HitOutConnectors;
+
 				bool Hit = WorldRef->SweepMultiByChannel(
-					HitOut, LineTraceFrom, LineTraceTo,
+					HitOutConnectors, LineTraceFrom, LineTraceTo,
 					FQuat::Identity, ECC_GameTraceChannel2,
 					FCollisionShape::MakeSphere(20.f),
 					RV_TraceParams, ExtraParams
@@ -98,7 +132,7 @@ void UOrderSpawnModule::TraceProjection()
 
 				DEBUG_TracedLocations.Add(LineTraceFrom);
 
-				for (auto& HitItem : HitOut)
+				for (auto& HitItem : HitOutConnectors)
 				{
 					AActor* HitActor = HitItem.GetActor();
 					if (HitActor)
@@ -109,7 +143,9 @@ void UOrderSpawnModule::TraceProjection()
 							AShipModule* Module = Cast<AShipModule>(ShipModuleConnector->GetParentActor());
 							if (Module && Module->CurrentState == EModuleState::STATE_Attached)
 							{
-								TracedTargetDestination = Location;
+								TracedTargetLocation = TraceLocation;
+								TracedTargetConnectorLocation = ConnectorLocation;
+								bValidAttachHit = true;
 								return;
 							}
 						}

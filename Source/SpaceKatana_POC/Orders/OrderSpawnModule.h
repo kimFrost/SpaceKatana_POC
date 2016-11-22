@@ -28,13 +28,22 @@ public:
 	FVector FlyInDirection;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
-	FVector TracedTargetDestination;
+	FVector TracedTargetLocation;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	FVector TracedTargetConnectorLocation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	int TracedTargetX;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	int TracedTargetY;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	bool bModuleCollisionDanger;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	bool bValidAttachHit;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	TArray<FVector> DEBUG_TracedLocations;
