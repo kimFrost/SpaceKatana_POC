@@ -220,7 +220,10 @@ void UOrderSpawnModule::ResolveOrder()
 
 	if (IsValid(SpawnedModule))
 	{
-		SpawnedModule->TargetMoveTo = TracedTargetLocation;
+		if (bValidAttachHit) 
+		{
+			SpawnedModule->TargetMoveTo = TracedTargetLocation;
+		}
 	}
 	
 	//SpawnModule();

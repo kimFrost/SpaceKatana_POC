@@ -243,8 +243,11 @@ AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> Mo
 	AShipModule* Module = nullptr;
 
 	FVector Location = CoordsToWorldLocation(X, Y) + FVector(GridTileSize / 2, GridTileSize / 2, 0);
+
+	// Location should be off screen in row / column
+
 	FRotator Rotation;
-	Rotation.Yaw = 0;
+	Rotation.Yaw = -90.f;
 	Rotation.Pitch = 0;
 	Rotation.Roll = 0;
 
