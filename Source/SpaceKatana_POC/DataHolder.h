@@ -20,7 +20,8 @@ enum class EShipModuleType : uint8
 	BlockCore UMETA(DisplayName = "BlockCore"),
 	BlockCorner UMETA(DisplayName = "BlockCorner"),
 	TurretLaser UMETA(DisplayName = "TurretLaser"),
-	Engine UMETA(DisplayName = "Engine")
+	Engine UMETA(DisplayName = "Engine"),
+	MODULE_Test UMETA(DisplayName = "Test")
 };
 
 UENUM(BlueprintType)
