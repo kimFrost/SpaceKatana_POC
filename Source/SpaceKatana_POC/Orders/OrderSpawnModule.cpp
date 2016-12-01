@@ -129,7 +129,6 @@ void UOrderSpawnModule::TraceProjection()
 				}
 			}
 
-			/*
 			for (auto& Connector : PlaceholderModule->Connectors)
 			{
 				if (!IsValid(Connector)) {
@@ -157,7 +156,6 @@ void UOrderSpawnModule::TraceProjection()
 				}
 
 			}
-			*/
 
 
 			//~~ Old Tracing method (SweepMultiByChannel) ~~//

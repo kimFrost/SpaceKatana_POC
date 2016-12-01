@@ -36,8 +36,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	int TurnsLeft;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	int X;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	int Y;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
