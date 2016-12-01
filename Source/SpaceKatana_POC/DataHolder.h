@@ -38,7 +38,8 @@ enum class EModuleState : uint8
 	STATE_Attached UMETA(DisplayName = "Attached"),
 	STATE_PendingDestroy UMETA(DisplayName = "PendingDestroy"),
 	STATE_Destroyed UMETA(DisplayName = "Destroyed"),
-	STATE_FlyIn UMETA(DisplayName = "Flying in")
+	STATE_FlyIn UMETA(DisplayName = "Flying in"),
+	STATE_Placeholder UMETA(DisplayName = "Placeholder")
 };
 
 UENUM(BlueprintType)

@@ -60,6 +60,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	TArray<AShipModule*> ConnectedTo;
 
+
 	UFUNCTION(BlueprintCallable, Category = "Ship")
 	void DestroyModule();
 

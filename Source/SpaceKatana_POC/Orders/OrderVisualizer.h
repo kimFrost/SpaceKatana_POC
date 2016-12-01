@@ -5,6 +5,7 @@
 #include "GameFramework/Actor.h"
 #include "DataHolder.h"
 #include "Order.h"
+#include "ShipModule.h"
 #include "OrderVisualizer.generated.h"
 
 UCLASS()

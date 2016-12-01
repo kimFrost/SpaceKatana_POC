@@ -37,7 +37,23 @@ void UOrderSpawnModule::SpawnModule()
 		{
 			SpawnedModule = GameMode->SpawnFlyInModule(ModuleClassToSpawn, X, Y, FlyInDirection, FVector(), Buyer);
 		}
+
+		// Create module placeholder
+		FActorSpawnParameters SpawnParameters;
+		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		FRotator Rotation;
+		Rotation.Yaw = -90.f;
+		Rotation.Pitch = 0;
+		Rotation.Roll = 0;
+
+		PlaceholderModule = WorldRef->SpawnActor<AShipModule>(ModuleClassToSpawn, OrderLocation, Rotation);
+		if (PlaceholderModule)
+		{
+			PlaceholderModule->CurrentState = EModuleState::STATE_Placeholder;
+			PlaceholderModule->InitModule(); // InitModule is implemented in blueprint with _implemented
+		}
 	}
+
 }
 
 
@@ -51,7 +67,7 @@ void UOrderSpawnModule::TraceProjection()
 	{
 		SpawnModule();
 	}
-	if (IsValid(SpawnedModule) && WorldRef)
+	if (IsValid(SpawnedModule) && IsValid(PlaceholderModule) && WorldRef)
 	{
 		FVector StartLocation = SpawnedModule->GetActorLocation();
 		float GridTileSize = 100.f;
@@ -65,8 +81,87 @@ void UOrderSpawnModule::TraceProjection()
 		// Loop tiles in directions (row/column)
 		for (int i = 1; i < 30; i++)
 		{
-			FVector TraceLocation = SpawnedModule->GetActorLocation() + (GridTileSize * i * FlyInDirection);
+			FVector TraceLocation = StartLocation + (GridTileSize * i * FlyInDirection);
 
+			//~~ New tracing method (Placeholder overlap) ~~//
+
+			// Set Placeholder world location and sweep location with root mesh
+			PlaceholderModule->SetActorLocation(TraceLocation);
+
+			/*
+			FHitResult HitResult;
+			if (PlaceholderModule->SetActorLocation(TraceLocation, true, &HitResult) == false)
+			{
+				bModuleCollisionDanger = true;
+				TracedTargetLocation = TraceLocation;
+				GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TracedTargetLocation.ToString());
+				return;
+			}
+			*/
+
+			// Trace base mesh overlap other module mesh
+			UStaticMeshComponent* RootMesh = Cast<UStaticMeshComponent>(PlaceholderModule->GetRootComponent());
+			if (RootMesh)
+			{
+				FVector TestMeshLocation = RootMesh->GetComponentLocation();
+
+				//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::White, TestMeshLocation.ToString());
+
+				TArray<AActor*> OverlappingActors;
+				RootMesh->GetOverlappingActors(OverlappingActors);
+				//RootMesh->GetOverlappingActors(OverlappingActors, AShipModule::StaticClass());
+
+				//TArray<UPrimitiveComponent*> OverlappingComponents;
+				//RootMesh->GetOverlappingComponents(OverlappingComponents);
+
+				for (auto& Actor : OverlappingActors)
+				{
+					AShipModule* OtherModule = Cast<AShipModule>(Actor);
+					if (OtherModule)
+					{
+						if (OtherModule->CurrentState == EModuleState::STATE_Attached) //TODO: Placeholder on placeholder
+						{
+							bModuleCollisionDanger = true;
+							TracedTargetLocation = TraceLocation; //TODO: Properly not correct
+							return;
+						}
+					}
+				}
+			}
+
+			/*
+			for (auto& Connector : PlaceholderModule->Connectors)
+			{
+				if (!IsValid(Connector)) {
+					return;
+				}
+
+				FVector ConnectorLocation = Connector->GetActorLocation() + (GridTileSize * i * FlyInDirection);
+
+				TArray<AActor*> OverlappingActors;
+				Connector->GetOverlappingActors(OverlappingActors, Connector->StaticClass());
+				for (auto& Actor : OverlappingActors)
+				{
+					AShipModuleConnector* OtherConnector = Cast<AShipModuleConnector>(Actor);
+					if (OtherConnector)
+					{
+						AShipModule* Module = Cast<AShipModule>(OtherConnector->GetParentActor());
+						if (Module && Module->CurrentState == EModuleState::STATE_Attached)
+						{
+							TracedTargetLocation = TraceLocation;
+							TracedTargetConnectorLocation = ConnectorLocation;
+							bValidAttachHit = true;
+							return;
+						}
+					}
+				}
+
+			}
+			*/
+
+
+			//~~ Old Tracing method (SweepMultiByChannel) ~~//
+			/*
 			for (auto& Connector : SpawnedModule->Connectors)
 			{
 				if (!IsValid(Connector)) {
@@ -151,64 +246,11 @@ void UOrderSpawnModule::TraceProjection()
 						}
 					}
 				}
-
-				// Trace for module blocking forward. Collision warning
-
-
-				/*
-				WorldRef->LineTraceSingleByChannel(RV_Hit, LineTraceFrom, LineTraceTo, ECC_GameTraceChannel2, RV_TraceParams);
-				if (RV_Hit.bBlockingHit)
-				{
-					//RV_Hit.GetComponent()
-				}
-				*/
-			}
-
-
-			/*
-			// Trace
-			FCollisionQueryParams RV_TraceParams = FCollisionQueryParams(FName(TEXT("RV_Trace")), true, this);
-			RV_TraceParams.bTraceComplex = true;
-			RV_TraceParams.bTraceAsyncScene = true;
-			RV_TraceParams.bReturnPhysicalMaterial = false;
-			//RV_TraceParams.TraceTag = TraceTag;
-
-			//~~ Re-initialize hit info ~~//
-			FHitResult RV_Hit(ForceInit);
-
-			FVector WorldLocation;
-			FVector WorldDirection;
-			this->DeprojectMousePositionToWorld(WorldLocation, WorldDirection);
-
-			//FRotator currentCharacterRotation = this->GetActorRotation();
-			//FRotator targetRotation = mouseDirection.Rotation();
-
-			FVector LineTraceFrom = WorldLocation + FVector{ 1.f, 1.f, 0.f };
-			FVector LineTraceTo = WorldDirection * 50000 + WorldLocation + FVector{ 1.f, 1.f, 0.f };
-
-			//ECC_GameTraceChannel1
-
-			//this->GetWorld()->LineTraceSingleByChannel(RV_Hit, LineTraceFrom, LineTraceTo, ChannelLandscape, RV_TraceParams);
-			this->GetWorld()->LineTraceSingleByChannel(RV_Hit, LineTraceFrom, LineTraceTo, ECC_Pawn, RV_TraceParams);
-			if (RV_Hit.bBlockingHit)
-			{
-				if (RV_Hit.GetActor())
-				{
-					AIslandTile* HitTile = Cast<AIslandTile>(RV_Hit.GetActor());
-				}
 			}
 			*/
+	
 		}
 	}
-
-	// Spawn module for trace projection through connectors
-
-
-	// Connector collision channel
-
-	// Loop all connectors of spawned module, and trace collision in the location offset by loop tile index in row 1*100, 2*100, 3*100, etc. 
-	// until hit connector of a parent module that is attached
-
 
 }
 

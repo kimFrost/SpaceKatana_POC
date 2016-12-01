@@ -25,6 +25,9 @@ public:
 	AShipModule* SpawnedModule;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	AShipModule* PlaceholderModule;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	FVector FlyInDirection;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
