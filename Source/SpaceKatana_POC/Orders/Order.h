@@ -31,6 +31,8 @@ public:
 
 	float Cost;
 
+	bool bIsResolved;
+
 	int TurnExcTime;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")

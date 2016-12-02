@@ -13,6 +13,7 @@ UOrder::UOrder()
 {
 	Buyer = nullptr;
 	Cost = 100.f;
+	bIsResolved = false;
 	TurnExcTime = 1;
 	TurnsLeft = TurnExcTime;
 	OrderLocation = FVector(0.f, 0.f, 0.f);
@@ -30,6 +31,7 @@ UOrder::~UOrder()
 
 void UOrder::ResolveOrder()
 {
+	bIsResolved = true;
 	OnOrderResolved.Broadcast();
 	// Remove self
 	//ConditionalBeginDestroy();

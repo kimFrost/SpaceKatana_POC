@@ -66,6 +66,31 @@ UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShip
 }
 
 
+void AGameModeBattle::UpdateOrders(EOrderType OrderType)
+{
+	//TODO: switch on which orders to cast and update and resolve
+	for (auto& Order : Orders)
+	{
+		if (IsValid(Order))
+		{
+			if (Order->TurnsLeft <= 1)
+			{
+				Order->ResolveOrder();
+			}
+		}
+	}
+	//~~ Clean array of resolved orders ~~//
+	for (int i = Orders.Num() - 1; i >= 0; i--)
+	{
+		UOrder* Order = Orders[i];
+		if ((IsValid(Order) && Order->bIsResolved) || !Order)
+		{
+			Orders.RemoveAt(i);
+		}
+	}
+}
+
+
 void AGameModeBattle::ConstructGrid()
 {
 

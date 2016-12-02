@@ -56,6 +56,9 @@ public:
 	void SpawnModule();
 
 	UFUNCTION(BlueprintCallable, Category = "Order")
+	void SpawnPlaceholderModule();
+
+	UFUNCTION(BlueprintCallable, Category = "Order")
 	void TraceProjection();
 
 

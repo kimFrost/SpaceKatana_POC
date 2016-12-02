@@ -50,7 +50,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Order")
 	UOrderSpawnModule* AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip* Buyer);
 
-	// UpdateOrders()
+	UFUNCTION(BlueprintCallable, Category = "Order")
+	void UpdateOrders(EOrderType OrderType);
 
 	UFUNCTION(BlueprintCallable, Category = Grid)
 	void ConstructGrid();

@@ -37,7 +37,15 @@ void UOrderSpawnModule::SpawnModule()
 		{
 			SpawnedModule = GameMode->SpawnFlyInModule(ModuleClassToSpawn, X, Y, FlyInDirection, FVector(), Buyer);
 		}
+		//~~ Destroy placeholder ~~//
+		PlaceholderModule->Destroy();
+	}
+}
 
+void UOrderSpawnModule::SpawnPlaceholderModule()
+{
+	if (WorldRef)
+	{
 		// Create module placeholder
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -53,7 +61,6 @@ void UOrderSpawnModule::SpawnModule()
 			PlaceholderModule->InitModule(); // InitModule is implemented in blueprint with _implemented
 		}
 	}
-
 }
 
 
@@ -63,19 +70,25 @@ void UOrderSpawnModule::TraceProjection()
 	bValidAttachHit = false;
 	bModuleCollisionDanger = false;
 
-	if (SpawnedModule == nullptr)
+	if (PlaceholderModule == nullptr)
 	{
-		SpawnModule();
+		SpawnPlaceholderModule();
 	}
-	if (IsValid(SpawnedModule) && IsValid(PlaceholderModule) && WorldRef)
+
+	if (IsValid(PlaceholderModule) && WorldRef)
 	{
-		FVector StartLocation = SpawnedModule->GetActorLocation();
+		FVector StartLocation;
 		float GridTileSize = 100.f;
 		
 		AGameModeBattle* GameMode = Cast<AGameModeBattle>(WorldRef->GetAuthGameMode());
 		if (GameMode)
 		{
 			GridTileSize = GameMode->GridTileSize;
+			StartLocation = GameMode->CoordsToWorldLocation(X, Y) + FVector(GridTileSize / 2, GridTileSize / 2, 0);
+		}
+		else
+		{
+			return;
 		}
 
 		// Loop tiles in directions (row/column)
@@ -103,14 +116,9 @@ void UOrderSpawnModule::TraceProjection()
 			UStaticMeshComponent* RootMesh = Cast<UStaticMeshComponent>(PlaceholderModule->GetRootComponent());
 			if (RootMesh)
 			{
-				FVector TestMeshLocation = RootMesh->GetComponentLocation();
-
-				//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::White, TestMeshLocation.ToString());
-
 				TArray<AActor*> OverlappingActors;
 				RootMesh->GetOverlappingActors(OverlappingActors);
 				//RootMesh->GetOverlappingActors(OverlappingActors, AShipModule::StaticClass());
-
 				//TArray<UPrimitiveComponent*> OverlappingComponents;
 				//RootMesh->GetOverlappingComponents(OverlappingComponents);
 
@@ -122,6 +130,8 @@ void UOrderSpawnModule::TraceProjection()
 						if (OtherModule->CurrentState == EModuleState::STATE_Attached) //TODO: Placeholder on placeholder
 						{
 							bModuleCollisionDanger = true;
+							TraceLocation = StartLocation + (GridTileSize * (i - 1) * FlyInDirection); // Pull trace location one back, so error doesn't show inside other module
+							PlaceholderModule->SetActorLocation(TraceLocation);
 							TracedTargetLocation = TraceLocation; //TODO: Properly not correct
 							return;
 						}
@@ -258,6 +268,8 @@ void UOrderSpawnModule::ResolveOrder()
 {
 	Super::ResolveOrder();
 
+	SpawnModule();
+
 	if (IsValid(SpawnedModule))
 	{
 		if (bValidAttachHit) 
@@ -265,9 +277,8 @@ void UOrderSpawnModule::ResolveOrder()
 			SpawnedModule->TargetMoveTo = TracedTargetLocation;
 		}
 	}
-	
-	//SpawnModule();
 
+	// WorldRef
 	// Set Module 
 
 	//!! UObject can't GetWorld Safely without path !!//
