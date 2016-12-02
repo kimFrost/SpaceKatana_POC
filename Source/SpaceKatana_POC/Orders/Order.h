@@ -13,6 +13,7 @@ class AShip;
 //~~~~~ Delegates/Event dispatcher ~~~~~//
 //DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTimeUpdated, float, Time, float, TimeProgressed);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOrderResolved);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOrderCancelled);
 //DECLARE_DYNAMIC_DELEGATE(FOrderResolved);
 //DECLARE_EVENT_OneParam( UActionManager, FEventSignature, AActor* )
 //DECLARE_EVENT(FOrderResolved, EventName)
@@ -32,6 +33,8 @@ public:
 	float Cost;
 
 	bool bIsResolved;
+
+	bool bIsCancelled;
 
 	int TurnExcTime;
 
@@ -55,7 +58,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Order")
 	virtual void ResolveOrder();
 
+	UFUNCTION(BlueprintCallable, Category = "Order")
+	virtual void CancelOrder();
+
 	UPROPERTY(BlueprintAssignable, Category = "Order")
 	FOrderResolved OnOrderResolved;
+
+	UPROPERTY(BlueprintAssignable, Category = "Order")
+	FOrderCancelled OnOrderCancelled;
 	
 };

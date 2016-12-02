@@ -267,14 +267,17 @@ void UOrderSpawnModule::TraceProjection()
 void UOrderSpawnModule::ResolveOrder()
 {
 	Super::ResolveOrder();
-
-	SpawnModule();
-
-	if (IsValid(SpawnedModule))
+	
+	if (!bIsCancelled)
 	{
-		if (bValidAttachHit) 
+		SpawnModule();
+
+		if (IsValid(SpawnedModule))
 		{
-			SpawnedModule->TargetMoveTo = TracedTargetLocation;
+			if (bValidAttachHit)
+			{
+				SpawnedModule->TargetMoveTo = TracedTargetLocation;
+			}
 		}
 	}
 
@@ -289,4 +292,17 @@ void UOrderSpawnModule::ResolveOrder()
 		GameMode->SpawnFlyInModule(ModuleClassToSpawn, X, Y, FlyInDirection, Buyer);
 	}
 	*/
+}
+
+
+void UOrderSpawnModule::CancelOrder()
+{
+	Super::CancelOrder();
+
+	if (IsValid(PlaceholderModule))
+	{
+		PlaceholderModule->Destroy();
+		PlaceholderModule = nullptr;
+	}
+
 }

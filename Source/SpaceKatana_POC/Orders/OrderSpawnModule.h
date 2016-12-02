@@ -66,5 +66,7 @@ private:
 	// Called when the order gets resolved
 	virtual void ResolveOrder() override;
 
+	// Called when the order gets cancelled
+	virtual void CancelOrder() override;
 
 };
