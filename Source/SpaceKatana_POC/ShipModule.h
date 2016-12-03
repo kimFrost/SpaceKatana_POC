@@ -4,6 +4,7 @@
 
 #include "GameFramework/Actor.h"
 #include "DataHolder.h"
+#include "Orders/OrderSpawnModule.h"
 #include "ShipModuleConnector.h"
 #include "ShipModule.generated.h"
 
@@ -60,6 +61,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	TArray<AShipModule*> ConnectedTo;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	UOrderSpawnModule* SpawnOrder;
 
 	UFUNCTION(BlueprintCallable, Category = "Ship")
 	void DestroyModule();

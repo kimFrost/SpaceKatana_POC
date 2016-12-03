@@ -58,6 +58,7 @@ void UOrderSpawnModule::SpawnPlaceholderModule()
 		if (PlaceholderModule)
 		{
 			PlaceholderModule->CurrentState = EModuleState::STATE_Placeholder;
+			PlaceholderModule->SpawnOrder = this;
 			PlaceholderModule->InitModule(); // InitModule is implemented in blueprint with _implemented
 		}
 	}

@@ -21,6 +21,7 @@ AShipModule::AShipModule()
 	bIsDestroyed = false;
 	CurrentState = EModuleState::STATE_Static;
 	FlyInDirection = FVector(1, 0, 0);
+	SpawnOrder = nullptr;
 
 	DistanceFromRoot = -1;
 }

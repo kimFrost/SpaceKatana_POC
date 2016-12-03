@@ -28,12 +28,15 @@ public:
 	UOrder();
 	~UOrder();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	AShip* Buyer;
 
 	float Cost;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	bool bIsResolved;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	bool bIsCancelled;
 
 	int TurnExcTime;
@@ -54,6 +57,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	UWorld* WorldRef;
+
+
 
 	UFUNCTION(BlueprintCallable, Category = "Order")
 	virtual void ResolveOrder();
