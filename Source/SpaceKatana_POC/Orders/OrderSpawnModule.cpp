@@ -92,6 +92,12 @@ void UOrderSpawnModule::TraceProjection()
 			return;
 		}
 
+		// Reset placeholder material color
+		if (PlaceholderModule->PlaceholderDynamicMaterialInstance)
+		{
+			PlaceholderModule->PlaceholderDynamicMaterialInstance->SetVectorParameterValue(FName(TEXT("Color")), FLinearColor(0.54f, 0.f, 0.019449f, 1.f));
+		}
+
 		// Loop tiles in directions (row/column)
 		for (int i = 1; i < 30; i++)
 		{
@@ -133,6 +139,7 @@ void UOrderSpawnModule::TraceProjection()
 							bModuleCollisionDanger = true;
 							TraceLocation = StartLocation + (GridTileSize * (i - 1) * FlyInDirection); // Pull trace location one back, so error doesn't show inside other module
 							PlaceholderModule->SetActorLocation(TraceLocation);
+							//RootMesh->GetMaterial(0)->
 							TracedTargetLocation = TraceLocation; //TODO: Properly not correct
 							return;
 						}
@@ -161,6 +168,10 @@ void UOrderSpawnModule::TraceProjection()
 							TracedTargetLocation = TraceLocation;
 							TracedTargetConnectorLocation = ConnectorLocation;
 							bValidAttachHit = true;
+							if (PlaceholderModule->PlaceholderDynamicMaterialInstance)
+							{
+								PlaceholderModule->PlaceholderDynamicMaterialInstance->SetVectorParameterValue(FName(TEXT("Color")), FLinearColor(0.220919f, 0.7f, 0.125622f, 1.f));
+							}
 							return;
 						}
 					}

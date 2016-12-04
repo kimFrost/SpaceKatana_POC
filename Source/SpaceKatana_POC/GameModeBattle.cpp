@@ -28,7 +28,7 @@ AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : 
 
 
 
-
+/******************** AddOrder_SpawnModule *************************/
 UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip * Buyer)
 {
 	UOrderSpawnModule* Order = NewObject<UOrderSpawnModule>();
@@ -47,6 +47,7 @@ UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShip
 
 		FRotator Rotation = Direction.Rotation();
 
+		/*
 		UWorld* const World = GetWorld();
 		if (World)
 		{
@@ -60,12 +61,15 @@ UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShip
 				OrderVisualizer->Init();
 			}
 		}
+		*/
+
 		Orders.Add(Order);
 	}
 	return Order;
 }
 
 
+/******************** UpdateOrders *************************/
 void AGameModeBattle::UpdateOrders(EOrderType OrderType)
 {
 	//TODO: switch on which orders to cast and update and resolve
@@ -91,6 +95,7 @@ void AGameModeBattle::UpdateOrders(EOrderType OrderType)
 }
 
 
+/******************** ConstructGrid *************************/
 void AGameModeBattle::ConstructGrid()
 {
 
@@ -120,12 +125,14 @@ void AGameModeBattle::ConstructGrid()
 }
 
 
+/******************** CoordsToWorldLocation *************************/
 FVector AGameModeBattle::CoordsToWorldLocation(int X, int Y)
 {
 	return FVector(X * GridTileSize - (GridTileSize * GridSizeX / 2), Y * GridTileSize - (GridTileSize * GridSizeY / 2), 0);
 }
 
 
+/******************** WorldLocationToCoords *************************/
 FVector2D AGameModeBattle::WorldLocationToCoords(FVector WorldLocation, bool bRoundOutOfBounds)
 {
 	FVector RelativeLocation = WorldLocation + FVector{ (GridTileSize * GridSizeX / 2), (GridTileSize * GridSizeY / 2), 0.f };
@@ -146,6 +153,7 @@ FVector2D AGameModeBattle::WorldLocationToCoords(FVector WorldLocation, bool bRo
 }
 
 
+/******************** UpdateAllModules *************************/
 void AGameModeBattle::UpdateAllModules()
 {
 	/*
@@ -203,6 +211,7 @@ ETurnStep AGameModeBattle::ProgressTurnStep()
 
 //struct FST_GridTile& AGameModeBattle::GetGridTile(FVector WorldLocation)
 //void AGameModeBattle::GetGridTile(FST_GridTile& Tile, FVector WorldLocation)
+/******************** GetGridTile *************************/
 UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfBounds)
 {
 	UGridTile* Tile = nullptr;
@@ -263,6 +272,7 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 }
 
 
+/******************** SpawnFlyInModule *************************/
 AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, FVector Target, AShip* Buyer)
 {
 	AShipModule* Module = nullptr;
@@ -305,6 +315,7 @@ AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> Mo
 }
 
 
+/******************** IsValidShipLocation *************************/
 bool AGameModeBattle::IsValidShipLocation(AShip* Ship, FVector WorldLocation)
 {
 	bool Valid = true;

@@ -64,6 +64,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	UOrderSpawnModule* SpawnOrder;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	UMaterialInstanceDynamic* PlaceholderDynamicMaterialInstance;
+
+
 	UFUNCTION(BlueprintCallable, Category = "Ship")
 	void DestroyModule();
 
