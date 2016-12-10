@@ -152,6 +152,7 @@ void AShip::UpdateModules()
 
 		RootModule->DistanceFromRoot = 0;
 		RootModule->CurrentState = EModuleState::STATE_Attached;
+		RootModule->bIsConnectedToRoot = true;
 
 		for (int32 k = 0; k < MaxDistance; k++)
 		{
@@ -163,11 +164,16 @@ void AShip::UpdateModules()
 			{
 				AShipModule* Module = Frontier[m];
 
+				// Need to reset all modules before update on all ship. Can do it in update function. Would override all traced on update on second ship. how and where??
+
+
 				/*
 				if (Tile->TileCard.bBlockPath) {
 					continue; //~~ Skip Tile ~~//
 				}
 				*/
+
+				// Set all adjacent module to be attached if this module is attached
 
 				//~~ Loop though all Paths connected to this tile to create the next frontier ~~//
 				for (int32 l = 0; l < Module->ConnectedTo.Num(); l++)

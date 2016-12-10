@@ -19,6 +19,7 @@ AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : 
 	GridSizeY = 15;
 	GridTileSize = 100.f;
 	CurrentStep = ETurnStep::Planning;
+	HighestSequence = 0;
 
 	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemBlueprint(TEXT("Blueprint'/Game/SpaceKatana/Blueprints/BP_OrderVisualizer.BP_OrderVisualizer'"));
 	if (ItemBlueprint.Object) {
@@ -41,6 +42,9 @@ UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShip
 		Order->OrderLocation = CoordsToWorldLocation(X, Y) + FVector(GridTileSize / 2, GridTileSize / 2, 0); // Add half grid size??
 		//Order->OnOrderResolved.AddDynamic();
 		Order->WorldRef = GetWorld();
+
+		HighestSequence++;
+		Order->Sequence = HighestSequence;
 
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -168,6 +172,8 @@ void AGameModeBattle::UpdateAllModules()
 		}
 	}
 	*/
+
+	//~~ Reset and update all modules ~~//
 	for (TActorIterator<AShipModule> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 	{
 		// Same as with the Object Iterator, access the subclass instance with the * or -> operators.

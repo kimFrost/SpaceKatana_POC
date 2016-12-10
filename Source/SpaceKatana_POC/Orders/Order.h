@@ -58,6 +58,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	UWorld* WorldRef;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	int Sequence;
+
 
 
 	UFUNCTION(BlueprintCallable, Category = "Order")

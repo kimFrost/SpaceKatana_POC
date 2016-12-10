@@ -21,6 +21,7 @@ UOrder::UOrder()
 	X = 0;
 	Y = 0;
 	WorldRef = nullptr;
+	Sequence = 1;
 }
 
 

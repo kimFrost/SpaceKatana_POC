@@ -143,7 +143,7 @@ void UOrderSpawnModule::TraceProjection()
 							TracedTargetLocation = TraceLocation; //TODO: Properly not correct
 							return;
 						}
-					}
+					} 
 				}
 			}
 

@@ -45,7 +45,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	TArray<UOrder*> Orders;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	int HighestSequence;
+
 	TSubclassOf<class AOrderVisualizer> OrderVisulizerBlueprint;
+
+
 
 	UFUNCTION(BlueprintCallable, Category = "Order")
 	UOrderSpawnModule* AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip* Buyer);

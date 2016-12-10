@@ -71,7 +71,8 @@ UENUM(BlueprintType)
 enum class EToolType : uint8
 {
 	Select UMETA(DisplayName = "Select"),
-	SpawnModule UMETA(DisplayName = "SpawnModule")
+	SpawnModule UMETA(DisplayName = "SpawnModule"),
+	Smash UMETA(DisplayName = "Smash")
 };
 
 
