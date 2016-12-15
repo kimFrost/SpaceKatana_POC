@@ -62,6 +62,9 @@ public:
 	TArray<AShipModule*> ConnectedTo;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	TArray<AShipModule*> AttachedTo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	UOrderSpawnModule* SpawnOrder;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")

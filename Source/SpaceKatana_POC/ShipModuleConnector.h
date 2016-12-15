@@ -22,7 +22,13 @@ public:
 	bool bIsHazard;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Connector")
-	bool bIsConnectable;
+	bool bIsFragile;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Connector")
+	bool bAllowConnection;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Connector")
+	bool bAllowAttachment;
 
 	UFUNCTION(BlueprintCallable, Category = "Data")
 	void Join(AShipModuleConnector* ConnectTo, bool bUpdateTransform, bool bUpdateOther);

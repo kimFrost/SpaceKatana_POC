@@ -12,7 +12,9 @@ AShipModuleConnector::AShipModuleConnector()
 	PrimaryActorTick.bCanEverTick = true;
 
 	bIsHazard = false;
-	bIsConnectable = false;
+	bIsFragile = false;
+	bAllowConnection = false;
+	bAllowAttachment = true;
 }
 
 

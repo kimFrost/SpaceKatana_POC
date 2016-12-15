@@ -66,6 +66,7 @@ void AShipModule::UpdateModule()
 void AShipModule::UpdateConnections()
 {
 	ConnectedTo.Empty();
+	AttachedTo.Empty();
 	for (auto& Connector : Connectors)
 	{
 		if (IsValid(Connector))
@@ -78,9 +79,40 @@ void AShipModule::UpdateConnections()
 				AShipModuleConnector* OtherConnector = Cast<AShipModuleConnector>(Actor);
 				if (OtherConnector)
 				{
+					/*
+					if (OtherConnector->bAllowConnection) 
+					{
+
+					}
+					if (OtherConnector->bAllowAttachment)
+					{
+
+					}
+					if (OtherConnector->bIsHazard) 
+					{
+
+					}
+					if (OtherConnector->bIsFragile) 
+					{
+
+					}
+					*/
+					
 					AShipModule* OtherModule = Cast<AShipModule>(OtherConnector->GetParentActor());
 					if (OtherModule)
 					{
+
+						if (Connector->bAllowAttachment && OtherConnector->bAllowAttachment)
+						{
+							AttachedTo.Add(OtherModule);
+							Connector->BoundTo = OtherConnector;
+						}
+						if (Connector->bAllowConnection && OtherConnector->bAllowConnection)
+						{
+							ConnectedTo.Add(OtherModule);
+							Connector->BoundTo = OtherConnector;
+						}
+
 						/*
 						if (GetParentActor() == OtherModule->GetParentActor())
 						{
@@ -88,9 +120,10 @@ void AShipModule::UpdateConnections()
 							ConnectedTo.Add(OtherModule);
 						}
 						*/
+
 						//~~ Allow modules from outside the ship to connect ~~//
-						Connector->BoundTo = OtherConnector;
-						ConnectedTo.Add(OtherModule);
+						//Connector->BoundTo = OtherConnector;
+						//ConnectedTo.Add(OtherModule);
 					}
 					break;
 				}
