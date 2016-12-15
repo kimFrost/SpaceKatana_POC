@@ -175,24 +175,37 @@ void AShip::UpdateModules()
 
 				// Set all adjacent module to be attached if this module is attached
 
-				//~~ Loop though all Paths connected to this tile to create the next frontier ~~//
-				for (int32 l = 0; l < Module->ConnectedTo.Num(); l++)
-				{
-					AShipModule* NeighborModule = Module->ConnectedTo[l];
-			
-					if (NeighborModule && !VisitedModules.Contains(NeighborModule))
-					{
-						NeighborModule->bIsConnectedToRoot = true;
-						NeighborModule->DistanceFromRoot = k + 1;
-						NeighborModule->bHasBeenUpdated = true;
-						NeighborModule->CurrentState = EModuleState::STATE_Attached;
-						
-						//NeighborModule->UpdateConnections(); // Instead make the game mode update connections on every module in play. Better for handling modules that are not connected to a ship.
-						
-						Modules.Add(NeighborModule); // Add module to ship's modules array
+				// If connected then it is also attached. So use AttachedTo as loop
 
-						ModuleRangeMap[k + 1].Add(NeighborModule); //~~ Add Neighbor module to the next frontier ~~//
-						VisitedModules.Add(NeighborModule); //~~ Add to visited, so that neighbors don't overlap each other. ~~//
+				for (int32 l = 0; l < Module->AttachedTo.Num(); l++)
+				{
+					AShipModule* NeighborModule = Module->AttachedTo[l];
+
+
+				}
+
+				if (Module->bIsConnectedToRoot)
+				{
+					//~~ Loop though all Paths connected to this tile to create the next frontier ~~//
+					for (int32 l = 0; l < Module->ConnectedTo.Num(); l++)
+					{
+						AShipModule* NeighborModule = Module->ConnectedTo[l];
+			
+
+						if (NeighborModule && !VisitedModules.Contains(NeighborModule))
+						{
+							NeighborModule->bIsConnectedToRoot = true;
+							NeighborModule->DistanceFromRoot = k + 1;
+							NeighborModule->bHasBeenUpdated = true;
+							NeighborModule->CurrentState = EModuleState::STATE_Attached;
+						
+							//NeighborModule->UpdateConnections(); // Instead make the game mode update connections on every module in play. Better for handling modules that are not connected to a ship.
+						
+							Modules.Add(NeighborModule); // Add module to ship's modules array
+
+							ModuleRangeMap[k + 1].Add(NeighborModule); //~~ Add Neighbor module to the next frontier ~~//
+							VisitedModules.Add(NeighborModule); //~~ Add to visited, so that neighbors don't overlap each other. ~~//
+						}
 					}
 				}
 			}
