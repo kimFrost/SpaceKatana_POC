@@ -187,6 +187,7 @@ void AShip::UpdateModules()
 		//~~ Connect flood fill ~~//
 		VisitedModules.Empty();
 		Frontier.Empty();
+		Frontier.Add(RootModule);
 		ModuleRangeMap.Empty();
 		ModuleRangeMap.Add(0, Frontier); //~~ Add base for the start ~~//
 		VisitedModules.Add(RootModule); //~~ Add base to allready visited to prevent bounce back ~~//

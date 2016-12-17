@@ -107,7 +107,7 @@ void AShipModule::UpdateConnections()
 							Connector->BoundTo = OtherConnector;
 						}
 						if (Connector->bAllowConnection && OtherConnector->bAllowConnection)
-						{
+						{ 
 							ConnectedTo.Add(OtherModule);
 							Connector->BoundTo = OtherConnector;
 						}
