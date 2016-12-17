@@ -101,7 +101,6 @@ void AShipModule::UpdateConnections()
 					AShipModule* OtherModule = Cast<AShipModule>(OtherConnector->GetParentActor());
 					if (OtherModule)
 					{
-
 						if (Connector->bAllowAttachment && OtherConnector->bAllowAttachment)
 						{
 							AttachedTo.Add(OtherModule);

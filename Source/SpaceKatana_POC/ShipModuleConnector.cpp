@@ -13,7 +13,7 @@ AShipModuleConnector::AShipModuleConnector()
 
 	bIsHazard = false;
 	bIsFragile = false;
-	bAllowConnection = false;
+	bAllowConnection = true;
 	bAllowAttachment = true;
 }
 

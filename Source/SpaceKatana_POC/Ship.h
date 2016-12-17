@@ -16,7 +16,10 @@ public:
 	AShip();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
-	TArray<AShipModule*> Modules;
+	TArray<AShipModule*> AttachedModules;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	TArray<AShipModule*> ConnectedModules;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	AShipModule* RootModule;

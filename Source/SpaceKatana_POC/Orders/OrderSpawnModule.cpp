@@ -134,7 +134,10 @@ void UOrderSpawnModule::TraceProjection()
 					AShipModule* OtherModule = Cast<AShipModule>(Actor);
 					if (OtherModule)
 					{
-						if (OtherModule->CurrentState == EModuleState::STATE_Attached || OtherModule->CurrentState == EModuleState::STATE_Static || OtherModule->CurrentState == EModuleState::STATE_Placeholder) //TODO: Placeholder on placeholder
+						if (OtherModule->CurrentState == EModuleState::STATE_Attached || 
+							OtherModule->CurrentState == EModuleState::STATE_Connected ||
+							OtherModule->CurrentState == EModuleState::STATE_Static ||
+							OtherModule->CurrentState == EModuleState::STATE_Placeholder) //TODO: Placeholder on placeholder
 						{
 							bModuleCollisionDanger = true;
 							TraceLocation = StartLocation + (GridTileSize * (i - 1) * FlyInDirection); // Pull trace location one back, so error doesn't show inside other module
@@ -163,7 +166,8 @@ void UOrderSpawnModule::TraceProjection()
 					if (OtherConnector)
 					{
 						AShipModule* Module = Cast<AShipModule>(OtherConnector->GetParentActor());
-						if (Module && Module->CurrentState == EModuleState::STATE_Attached)
+						if (Module && Module->CurrentState == EModuleState::STATE_Connected || 
+							Module && Module->CurrentState == EModuleState::STATE_Attached)
 						{
 							TracedTargetLocation = TraceLocation;
 							TracedTargetConnectorLocation = ConnectorLocation;

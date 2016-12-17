@@ -36,11 +36,13 @@ enum class EModuleState : uint8
 {
 	STATE_Static UMETA(DisplayName = "Static"),
 	STATE_Attached UMETA(DisplayName = "Attached"),
+	STATE_Connected UMETA(DisplayName = "Connected"),
 	STATE_PendingDestroy UMETA(DisplayName = "PendingDestroy"),
 	STATE_Destroyed UMETA(DisplayName = "Destroyed"),
 	STATE_FlyIn UMETA(DisplayName = "Flying in"),
 	STATE_Placeholder UMETA(DisplayName = "Placeholder")
 };
+
 
 UENUM(BlueprintType)
 enum class EShipMessage : uint8

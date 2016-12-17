@@ -327,7 +327,7 @@ bool AGameModeBattle::IsValidShipLocation(AShip* Ship, FVector WorldLocation)
 	bool Valid = true;
 	if (IsValid(Ship))
 	{
-		for (auto& Module : Ship->Modules)
+		for (auto& Module : Ship->AttachedModules)
 		{
 			if (IsValid(Module))
 			{

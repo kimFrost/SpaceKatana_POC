@@ -29,7 +29,7 @@ AShipModule* AShip::AddModule(AShipModule* Module)
 		//this->AddComponent("ChildActor");
 		//Module->AttachToComponent();
 		Module->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, EAttachmentRule::KeepRelative, EAttachmentRule::KeepRelative, true), NAME_None);
-		Module->CurrentState = EModuleState::STATE_Attached;
+		//Module->CurrentState = EModuleState::STATE_Attached;
 		UStaticMeshComponent* RootMesh = Cast<UStaticMeshComponent>(Module->GetRootComponent());
 		if (RootMesh)
 		{
@@ -63,7 +63,8 @@ AShipModule * AShip::AddModuleOfClass(TSubclassOf<class AShipModule> ModuleClass
 /******************** UpdateModules *************************/
 void AShip::UpdateModules()
 {
-	Modules.Empty();
+	AttachedModules.Empty();
+	ConnectedModules.Empty();
 
 
 	// Get all child modules of class (Modules are no longer child components, so this won't work)
@@ -151,9 +152,10 @@ void AShip::UpdateModules()
 		VisitedModules.Add(RootModule); //~~ Add base to allready visited to prevent bounce back ~~//
 
 		RootModule->DistanceFromRoot = 0;
-		RootModule->CurrentState = EModuleState::STATE_Attached;
+		RootModule->CurrentState = EModuleState::STATE_Connected;
 		RootModule->bIsConnectedToRoot = true;
 
+		// Attach flood fill
 		for (int32 k = 0; k < MaxDistance; k++)
 		{
 			TArray<AShipModule*> NewFrontier;
@@ -163,45 +165,62 @@ void AShip::UpdateModules()
 			for (int32 m = 0; m < Frontier.Num(); m++)
 			{
 				AShipModule* Module = Frontier[m];
+				//~~ If module self is connected or attached ~~//
+				if (Module->CurrentState == EModuleState::STATE_Connected || 
+					Module->CurrentState == EModuleState::STATE_Attached)
+				{
+					for (int32 l = 0; l < Module->AttachedTo.Num(); l++)
+					{
+						AShipModule* NeighborModule = Module->AttachedTo[l];
+						if (NeighborModule && !VisitedModules.Contains(NeighborModule))
+						{
+							NeighborModule->CurrentState = EModuleState::STATE_Attached;
+							AttachedModules.Add(NeighborModule);
+							ModuleRangeMap[k + 1].Add(NeighborModule); //~~ Add Neighbor module to the next frontier ~~//
+							VisitedModules.Add(NeighborModule); //~~ Add to visited, so that neighbors don't overlap each other. ~~//
+						}
+					}
+				}
+			}
+		}
 
-				// Need to reset all modules before update on all ship. Can do it in update function. Would override all traced on update on second ship. how and where??
-
-
+		//~~ Connect flood fill ~~//
+		VisitedModules.Empty();
+		Frontier.Empty();
+		ModuleRangeMap.Empty();
+		ModuleRangeMap.Add(0, Frontier); //~~ Add base for the start ~~//
+		VisitedModules.Add(RootModule); //~~ Add base to allready visited to prevent bounce back ~~//
+		for (int32 k = 0; k < MaxDistance; k++)
+		{
+			TArray<AShipModule*> NewFrontier;
+			ModuleRangeMap.Add(k + 1, NewFrontier);
+			Frontier = ModuleRangeMap[k];
+			//~~ Loop though all modules in current frontier ~~//
+			for (int32 m = 0; m < Frontier.Num(); m++)
+			{
+				AShipModule* Module = Frontier[m];
 				/*
 				if (Tile->TileCard.bBlockPath) {
 					continue; //~~ Skip Tile ~~//
 				}
 				*/
 
-				// Set all adjacent module to be attached if this module is attached
-
-				// If connected then it is also attached. So use AttachedTo as loop
-
-				for (int32 l = 0; l < Module->AttachedTo.Num(); l++)
-				{
-					AShipModule* NeighborModule = Module->AttachedTo[l];
-
-
-				}
-
-				if (Module->bIsConnectedToRoot)
+				//if (Module->bIsConnectedToRoot)
+				if (Module->CurrentState == EModuleState::STATE_Connected)
 				{
 					//~~ Loop though all Paths connected to this tile to create the next frontier ~~//
 					for (int32 l = 0; l < Module->ConnectedTo.Num(); l++)
 					{
 						AShipModule* NeighborModule = Module->ConnectedTo[l];
-			
-
 						if (NeighborModule && !VisitedModules.Contains(NeighborModule))
 						{
 							NeighborModule->bIsConnectedToRoot = true;
 							NeighborModule->DistanceFromRoot = k + 1;
 							NeighborModule->bHasBeenUpdated = true;
-							NeighborModule->CurrentState = EModuleState::STATE_Attached;
+							NeighborModule->CurrentState = EModuleState::STATE_Connected;
 						
 							//NeighborModule->UpdateConnections(); // Instead make the game mode update connections on every module in play. Better for handling modules that are not connected to a ship.
-						
-							Modules.Add(NeighborModule); // Add module to ship's modules array
+							ConnectedModules.Add(NeighborModule);
 
 							ModuleRangeMap[k + 1].Add(NeighborModule); //~~ Add Neighbor module to the next frontier ~~//
 							VisitedModules.Add(NeighborModule); //~~ Add to visited, so that neighbors don't overlap each other. ~~//
