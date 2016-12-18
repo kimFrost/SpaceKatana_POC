@@ -146,9 +146,11 @@ void UOrderSpawnModule::TraceProjection()
 							TracedTargetLocation = TraceLocation; //TODO: Properly not correct
 							return;
 						}
-					} 
+					}
 				}
 			}
+
+			//bModuleCollisionDanger
 
 			for (auto& Connector : PlaceholderModule->Connectors)
 			{
@@ -165,18 +167,32 @@ void UOrderSpawnModule::TraceProjection()
 					AShipModuleConnector* OtherConnector = Cast<AShipModuleConnector>(Actor);
 					if (OtherConnector)
 					{
-						AShipModule* Module = Cast<AShipModule>(OtherConnector->GetParentActor());
-						if (Module && Module->CurrentState == EModuleState::STATE_Connected || 
-							Module && Module->CurrentState == EModuleState::STATE_Attached)
+
+						// If front facing connectors overlap a fragile/hazard connector, then on danger collision course.
+						// Then a valid attach/connect connector, can override the collision, if caught in this loop, else break.
+
+						if (OtherConnector->bIsFragile || OtherConnector->bIsHazard)
 						{
-							TracedTargetLocation = TraceLocation;
-							TracedTargetConnectorLocation = ConnectorLocation;
-							bValidAttachHit = true;
-							if (PlaceholderModule->PlaceholderDynamicMaterialInstance)
+							// If two ore more connectors touch the same parent module of fragile/hazard connectors, can I assume that our trace module are inside a fragile/hazard area?
+							// No. What if the fragile part is a window of a coridor. Only one fragile part. I need connectors facing the same direction as FlyInDirection.
+
+						}
+
+						if (OtherConnector->bAllowAttachment || OtherConnector->bAllowConnection)
+						{
+							AShipModule* Module = Cast<AShipModule>(OtherConnector->GetParentActor());
+							if (Module && Module->CurrentState == EModuleState::STATE_Connected ||
+								Module && Module->CurrentState == EModuleState::STATE_Attached)
 							{
-								PlaceholderModule->PlaceholderDynamicMaterialInstance->SetVectorParameterValue(FName(TEXT("Color")), FLinearColor(0.220919f, 0.7f, 0.125622f, 1.f));
+								TracedTargetLocation = TraceLocation;
+								TracedTargetConnectorLocation = ConnectorLocation;
+								bValidAttachHit = true;
+								if (PlaceholderModule->PlaceholderDynamicMaterialInstance)
+								{
+									PlaceholderModule->PlaceholderDynamicMaterialInstance->SetVectorParameterValue(FName(TEXT("Color")), FLinearColor(0.220919f, 0.7f, 0.125622f, 1.f));
+								}
+								return;
 							}
-							return;
 						}
 					}
 				}
