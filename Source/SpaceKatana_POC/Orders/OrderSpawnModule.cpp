@@ -119,6 +119,7 @@ void UOrderSpawnModule::TraceProjection()
 			}
 			*/
 
+
 			// Trace base mesh overlap other module mesh
 			UStaticMeshComponent* RootMesh = Cast<UStaticMeshComponent>(PlaceholderModule->GetRootComponent());
 			if (RootMesh)
@@ -150,6 +151,7 @@ void UOrderSpawnModule::TraceProjection()
 				}
 			}
 
+
 			//bModuleCollisionDanger
 
 			for (auto& Connector : PlaceholderModule->Connectors)
@@ -159,14 +161,26 @@ void UOrderSpawnModule::TraceProjection()
 				}
 
 				FVector ConnectorLocation = Connector->GetActorLocation() + (GridTileSize * i * FlyInDirection);
+				//FVector ConnectorDirection = Connector->GetActorRotation().Vector();
+				FVector ConnectorDirection = Connector->GetActorForwardVector();
+				bool bIsConnectorInFront = false;
+				if (ConnectorDirection.Equals(FlyInDirection, 0.1f)) {
+					bIsConnectorInFront = false;
+				}
 
 				TArray<AActor*> OverlappingActors;
 				Connector->GetOverlappingActors(OverlappingActors, Connector->StaticClass());
-				for (auto& Actor : OverlappingActors)
+				for (auto& Actor : OverlappingActors) 
 				{
 					AShipModuleConnector* OtherConnector = Cast<AShipModuleConnector>(Actor);
 					if (OtherConnector)
 					{
+						FVector InversedForwardVector = OtherConnector->GetActorForwardVector() * -1;
+						bool bIsOtherConnectorOpposite = InversedForwardVector.Equals(ConnectorDirection, 0.1f);
+
+						if (bIsConnectorInFront && bIsOtherConnectorOpposite) {
+							
+						}
 
 						// If front facing connectors overlap a fragile/hazard connector, then on danger collision course.
 						// Then a valid attach/connect connector, can override the collision, if caught in this loop, else break.
