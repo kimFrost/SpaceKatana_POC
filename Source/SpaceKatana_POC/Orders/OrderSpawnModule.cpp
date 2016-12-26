@@ -120,7 +120,8 @@ void UOrderSpawnModule::TraceProjection()
 			*/
 
 
-			// Trace base mesh overlap other module mesh
+			// Trace base mesh overlap other module mesh (Using connector overlap and rotation instead with bIsHazard and bIsFragile)
+			/*
 			UStaticMeshComponent* RootMesh = Cast<UStaticMeshComponent>(PlaceholderModule->GetRootComponent());
 			if (RootMesh)
 			{
@@ -150,7 +151,7 @@ void UOrderSpawnModule::TraceProjection()
 					}
 				}
 			}
-
+			*/
 
 			//bModuleCollisionDanger
 
@@ -165,8 +166,10 @@ void UOrderSpawnModule::TraceProjection()
 				FVector ConnectorDirection = Connector->GetActorForwardVector();
 				bool bIsConnectorInFront = false;
 				if (ConnectorDirection.Equals(FlyInDirection, 0.1f)) {
-					bIsConnectorInFront = false;
+					bIsConnectorInFront = true;
 				}
+
+				//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, ConnectorDirection.Equals(FlyInDirection, 0.1f) ? "True" : "False");
 
 				TArray<AActor*> OverlappingActors;
 				Connector->GetOverlappingActors(OverlappingActors, Connector->StaticClass());
@@ -178,8 +181,18 @@ void UOrderSpawnModule::TraceProjection()
 						FVector InversedForwardVector = OtherConnector->GetActorForwardVector() * -1;
 						bool bIsOtherConnectorOpposite = InversedForwardVector.Equals(ConnectorDirection, 0.1f);
 
-						if (bIsConnectorInFront && bIsOtherConnectorOpposite) {
-							
+						//if (bIsConnectorInFront && bIsOtherConnectorOpposite) {
+						if (bIsConnectorInFront) {
+							if (OtherConnector->bIsFragile || OtherConnector->bIsHazard || Connector->bIsFragile || Connector->bIsHazard)
+							{
+								bModuleCollisionDanger = true;
+								TracedTargetLocation = TraceLocation;
+								TracedTargetConnectorLocation = ConnectorLocation;
+								if (PlaceholderModule->PlaceholderDynamicMaterialInstance)
+								{
+									PlaceholderModule->PlaceholderDynamicMaterialInstance->SetVectorParameterValue(FName(TEXT("Color")), FLinearColor(0.9f, 0.01f, 0.01f, 1.f));
+								}
+							}
 						}
 
 						// If front facing connectors overlap a fragile/hazard connector, then on danger collision course.
@@ -192,27 +205,33 @@ void UOrderSpawnModule::TraceProjection()
 
 						}
 
-						if (OtherConnector->bAllowAttachment || OtherConnector->bAllowConnection)
+						if (!bValidAttachHit)
 						{
-							AShipModule* Module = Cast<AShipModule>(OtherConnector->GetParentActor());
-							if (Module && Module->CurrentState == EModuleState::STATE_Connected ||
-								Module && Module->CurrentState == EModuleState::STATE_Attached)
+							if (OtherConnector->bAllowAttachment || OtherConnector->bAllowConnection)
 							{
-								TracedTargetLocation = TraceLocation;
-								TracedTargetConnectorLocation = ConnectorLocation;
-								bValidAttachHit = true;
-								if (PlaceholderModule->PlaceholderDynamicMaterialInstance)
-								{
-									PlaceholderModule->PlaceholderDynamicMaterialInstance->SetVectorParameterValue(FName(TEXT("Color")), FLinearColor(0.220919f, 0.7f, 0.125622f, 1.f));
-								}
-								return;
+								AShipModule* Module = Cast<AShipModule>(OtherConnector->GetParentActor());
+
+								//if (Module && Module->CurrentState == EModuleState::STATE_Connected ||
+								//	Module && Module->CurrentState == EModuleState::STATE_Attached)
+								//{
+									TracedTargetLocation = TraceLocation;
+									TracedTargetConnectorLocation = ConnectorLocation;
+									bValidAttachHit = true;
+									if (PlaceholderModule->PlaceholderDynamicMaterialInstance)
+									{
+										PlaceholderModule->PlaceholderDynamicMaterialInstance->SetVectorParameterValue(FName(TEXT("Color")), FLinearColor(0.220919f, 0.7f, 0.125622f, 1.f));
+									}
+									return;
+								//}
 							}
 						}
 					}
 				}
-
+			} //~~ Loop Connectors (END) ~~//
+			if (bModuleCollisionDanger && !bValidAttachHit)
+			{
+				return;
 			}
-
 
 			//~~ Old Tracing method (SweepMultiByChannel) ~~//
 			/*
