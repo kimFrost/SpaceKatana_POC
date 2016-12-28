@@ -31,6 +31,7 @@ public:
 
 	int GridSizeX;
 	int GridSizeY;
+	int GridSizeZ;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
 	float GridTileSize;
@@ -53,7 +54,7 @@ public:
 
 
 	UFUNCTION(BlueprintCallable, Category = "Order")
-	UOrderSpawnModule* AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip* Buyer);
+	UOrderSpawnModule* AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Z, FVector Direction, AShip* Buyer);
 
 	UFUNCTION(BlueprintCallable, Category = "Order")
 	void UpdateOrders(EOrderType OrderType);
@@ -65,7 +66,7 @@ public:
 	FVector CoordsToWorldLocation(int X, int Y);
 
 	UFUNCTION(BlueprintCallable, Category = Grid)
-	FVector2D WorldLocationToCoords(FVector WorldLocation, bool bRoundOutOfBounds);
+	FVector WorldLocationToCoords(FVector WorldLocation, bool bRoundOutOfBounds);
 
 	UFUNCTION(BlueprintCallable, Category = Ship)
 	void UpdateAllModules();

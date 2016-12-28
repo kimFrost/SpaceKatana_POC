@@ -43,6 +43,9 @@ public:
 	int TracedTargetY;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	int TracedTargetZ;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	bool bModuleCollisionDanger;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")

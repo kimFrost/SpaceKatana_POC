@@ -17,6 +17,7 @@ AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : 
 {
 	GridSizeX = 20;
 	GridSizeY = 15;
+	GridSizeZ = 15;
 	GridTileSize = 100.f;
 	CurrentStep = ETurnStep::Planning;
 	HighestSequence = 0;
@@ -30,7 +31,7 @@ AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : 
 
 
 /******************** AddOrder_SpawnModule *************************/
-UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, AShip * Buyer)
+UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Z, FVector Direction, AShip * Buyer)
 {
 	UOrderSpawnModule* Order = NewObject<UOrderSpawnModule>();
 	if (Order) 
@@ -38,8 +39,8 @@ UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShip
 		Order->ModuleClassToSpawn = ModuleClass;
 		Order->FlyInDirection = Direction;
 		Order->X = X;
-		Order->Y = Y;
-		Order->OrderLocation = CoordsToWorldLocation(X, Y) + FVector(GridTileSize / 2, GridTileSize / 2, 0); // Add half grid size??
+		Order->Z = Z;
+		Order->OrderLocation = CoordsToWorldLocation(X, Z) + FVector(GridTileSize / 2, 0.f, GridTileSize / 2); // Add half grid size??
 		//Order->OnOrderResolved.AddDynamic();
 		Order->WorldRef = GetWorld();
 
@@ -103,23 +104,23 @@ void AGameModeBattle::UpdateOrders(EOrderType OrderType)
 void AGameModeBattle::ConstructGrid()
 {
 
-	for (int Y = 0; Y < GridSizeY; Y++)
+	for (int Z = 0; Z < GridSizeZ; Z++)
 	{
 		for (int X = 0; X < GridSizeX; X++)
 		{
 			FVector TileWorldLocation;
 			TileWorldLocation.X = GridTileSize * X - (GridTileSize * GridSizeX / 2);
 			//TileWorldLocation.X = GridTileSize * X - (GridTileSize * GridSizeX / 2) - GridTileSize / 2;
-			TileWorldLocation.Y = GridTileSize * Y - (GridTileSize * GridSizeY / 2);
+			TileWorldLocation.Y = 0.f; //TileWorldLocation.Y = GridTileSize * Y - (GridTileSize * GridSizeY / 2);
 			//TileWorldLocation.Y = GridTileSize * Y - (GridTileSize * GridSizeY / 2) - GridTileSize / 2;
-			TileWorldLocation.Z = 0.f;
+			TileWorldLocation.Z = TileWorldLocation.Z = GridTileSize * Z - (GridTileSize * GridSizeZ / 2);
 
 			//FST_GridTile Tile = FST_GridTile(nullptr, X, Y, TileWorldLocation);
 			UGridTile* Tile = NewObject<UGridTile>();
 			if (Tile)
 			{
 				Tile->WorldLocation = TileWorldLocation;
-				Tile->Row = Y;
+				Tile->Row = Z;
 				Tile->Column = X;
 			}
 			
@@ -130,30 +131,30 @@ void AGameModeBattle::ConstructGrid()
 
 
 /******************** CoordsToWorldLocation *************************/
-FVector AGameModeBattle::CoordsToWorldLocation(int X, int Y)
+FVector AGameModeBattle::CoordsToWorldLocation(int X, int Z)
 {
-	return FVector(X * GridTileSize - (GridTileSize * GridSizeX / 2), Y * GridTileSize - (GridTileSize * GridSizeY / 2), 0);
+	return FVector(X * GridTileSize - (GridTileSize * GridSizeX / 2), 0.f, Z * GridTileSize - (GridTileSize * GridSizeZ / 2));
 }
 
 
 /******************** WorldLocationToCoords *************************/
-FVector2D AGameModeBattle::WorldLocationToCoords(FVector WorldLocation, bool bRoundOutOfBounds)
+FVector AGameModeBattle::WorldLocationToCoords(FVector WorldLocation, bool bRoundOutOfBounds)
 {
-	FVector RelativeLocation = WorldLocation + FVector{ (GridTileSize * GridSizeX / 2), (GridTileSize * GridSizeY / 2), 0.f };
+	FVector RelativeLocation = WorldLocation + FVector{ (GridTileSize * GridSizeX / 2), 0.f, (GridTileSize * GridSizeZ / 2) };
 
 	if (bRoundOutOfBounds)
 	{
 		RelativeLocation.X = FMath::Clamp(RelativeLocation.X, 0.f, (GridSizeX - 1) * GridTileSize);
-		RelativeLocation.Y = FMath::Clamp(RelativeLocation.Y, 0.f, (GridSizeY - 1) * GridTileSize);
+		RelativeLocation.Z = FMath::Clamp(RelativeLocation.Z, 0.f, (GridSizeZ - 1) * GridTileSize);
 	}
 
 	float TileXGuess = RelativeLocation.X / GridTileSize;
-	float TileYGuess = RelativeLocation.Y / GridTileSize;
+	float TileZGuess = RelativeLocation.Z / GridTileSize;
 
 	int TileX = FMath::FloorToInt(TileXGuess);
-	int TileY = FMath::FloorToInt(TileYGuess);
+	int TileZ = FMath::FloorToInt(TileZGuess);
 
-	return (FVector2D(TileX, TileY));
+	return (FVector(TileX, 0.f, TileZ));
 }
 
 
@@ -246,9 +247,9 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 	int TileY = FMath::FloorToInt(TileYGuess);
 	*/
 
-	FVector2D TileCoords = WorldLocationToCoords(WorldLocation, bRoundOutOfBounds);
+	FVector TileCoords = WorldLocationToCoords(WorldLocation, bRoundOutOfBounds);
 
-	int TileIndex = TileCoords.Y * GridSizeX + TileCoords.X;
+	int TileIndex = TileCoords.Z * GridSizeX + TileCoords.X;
 	if (GridTiles.IsValidIndex(TileIndex))
 	{
 		return GridTiles[TileIndex];
@@ -279,21 +280,22 @@ UGridTile* AGameModeBattle::GetGridTile(FVector WorldLocation, bool bRoundOutOfB
 
 
 /******************** SpawnFlyInModule *************************/
-AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Y, FVector Direction, FVector Target, AShip* Buyer)
+AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Z, FVector Direction, FVector Target, AShip* Buyer)
 {
 	AShipModule* Module = nullptr;
 
-	FVector Location = CoordsToWorldLocation(X, Y) + FVector(GridTileSize / 2, GridTileSize / 2, 0);
+	FVector Location = CoordsToWorldLocation(X, Z) + FVector(GridTileSize / 2, GridTileSize / 2, 0);
 
 	// Location should be off screen in row / column
 
 	FRotator Rotation;
-	Rotation.Yaw = -90.f;
+	//Rotation.Yaw = -90.f;
+	Rotation.Yaw = 0.f;
 	Rotation.Pitch = 0;
-	Rotation.Roll = 0;
+	Rotation.Roll = 90.f;
 
 	Location = Location - (Direction * 2000); 
-	Location.Z = 0;
+	Location.Y = 0;
 
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;

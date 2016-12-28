@@ -50,9 +50,10 @@ void UOrderSpawnModule::SpawnPlaceholderModule()
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		FRotator Rotation;
-		Rotation.Yaw = -90.f;
+		//Rotation.Yaw = -90.f;
+		Rotation.Yaw = 0.f;
 		Rotation.Pitch = 0;
-		Rotation.Roll = 0;
+		Rotation.Roll = 90.f;
 
 		PlaceholderModule = WorldRef->SpawnActor<AShipModule>(ModuleClassToSpawn, OrderLocation, Rotation);
 		if (PlaceholderModule)
@@ -85,7 +86,7 @@ void UOrderSpawnModule::TraceProjection()
 		if (GameMode)
 		{
 			GridTileSize = GameMode->GridTileSize;
-			StartLocation = GameMode->CoordsToWorldLocation(X, Y) + FVector(GridTileSize / 2, GridTileSize / 2, 0);
+			StartLocation = GameMode->CoordsToWorldLocation(X, Z) + FVector(GridTileSize / 2, 0.f, GridTileSize / 2);
 		}
 		else
 		{

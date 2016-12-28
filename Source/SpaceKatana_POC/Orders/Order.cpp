@@ -20,6 +20,7 @@ UOrder::UOrder()
 	OrderLocation = FVector(0.f, 0.f, 0.f);
 	X = 0;
 	Y = 0;
+	Z = 0;
 	WorldRef = nullptr;
 	Sequence = 1;
 }
