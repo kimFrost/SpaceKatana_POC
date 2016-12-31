@@ -62,6 +62,14 @@ enum class ETurnStep : uint8
 };
 
 UENUM(BlueprintType)
+enum class EResourceStep : uint8
+{
+	Production UMETA(DisplayName = "Production"),
+	Storage UMETA(DisplayName = "Storage"),
+	Upkeep UMETA(DisplayName = "Upkeep")
+};
+
+UENUM(BlueprintType)
 enum class EOrderType : uint8
 {
 	MoveShip UMETA(DisplayName = "MoveShip"),
@@ -126,7 +134,7 @@ public:
 		FString Title = "",
 		EShipModuleType Type = EShipModuleType::BlockSquare,
 		float Rotation = 0.f,
-		FVector2D Position = FVector2D{0, 0})
+		FVector Position = FVector{0, 0, 0})
 		: Title(Title)
 		, Type(Type)
 		, Rotation(Rotation)
@@ -139,7 +147,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	float Rotation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
-	FVector2D Position;
+	FVector Position;
 };
 
 

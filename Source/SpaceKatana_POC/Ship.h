@@ -46,6 +46,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Ship")
 	void UpdateConnections();
 
+	UFUNCTION(BlueprintCallable, Category = "Ship")
+	void ParseProduction();
+
+	UFUNCTION(BlueprintCallable, Category = "Ship")
+	void ParseStorage();
+
+	UFUNCTION(BlueprintCallable, Category = "Ship")
+	void ParseUpkeep();
+
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

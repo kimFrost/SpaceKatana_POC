@@ -2,6 +2,8 @@
 
 #include "SpaceKatana_POC.h"
 #include "ShipModule.h"
+#include "Components/ModuleComponent.h"
+#include "Components/ModulePowerComponent.h"
 #include "Ship.h"
 
 
@@ -16,6 +18,7 @@ AShip::AShip()
 	Income = 0.f;
 
 }
+
 
 /******************** AddModule *************************/
 AShipModule* AShip::AddModule(AShipModule* Module)
@@ -51,6 +54,7 @@ AShipModule* AShip::AddModule(AShipModule* Module)
 	}
 	return AttachedModule;
 }
+
 
 /******************** AddModuleOfClass *************************/
 AShipModule * AShip::AddModuleOfClass(TSubclassOf<class AShipModule> ModuleClass, FVector WorldLocation, FRotator WorldRotation)
@@ -264,6 +268,59 @@ void AShip::UpdateConnections()
 		}
 	}
 	*/
+}
+
+
+/******************** ParseProduction *************************/
+void AShip::ParseProduction()
+{
+	//~~ Loop though all connected modules ~~//
+	for (int32 m = 0; m < ConnectedModules.Num(); m++)
+	{
+		AShipModule* Module = ConnectedModules[m];
+		if (IsValid(Module))
+		{
+			TArray<UActorComponent*> ModuleComponents = Module->GetComponentsByClass(UModuleComponent::StaticClass());
+			for (auto& ModuleComponent : ModuleComponents)
+			{
+				UModulePowerComponent* PowerComponent = Cast<UModulePowerComponent>(ModuleComponent);
+				if (PowerComponent)
+				{
+					PowerComponent->GeneratePower();
+				}
+			}
+		}
+	}
+}
+
+
+/******************** ParseStorage *************************/
+void AShip::ParseStorage()
+{
+	//~~ Loop though all connected modules ~~//
+	for (int32 m = 0; m < ConnectedModules.Num(); m++)
+	{
+		AShipModule* Module = ConnectedModules[m];
+		if (IsValid(Module))
+		{
+
+		}
+	}
+}
+
+
+/******************** ParseUpkeep *************************/
+void AShip::ParseUpkeep()
+{
+	//~~ Loop though all connected modules ~~//
+	for (int32 m = 0; m < ConnectedModules.Num(); m++)
+	{
+		AShipModule* Module = ConnectedModules[m];
+		if (IsValid(Module))
+		{
+
+		}
+	}
 }
 
 

@@ -291,8 +291,8 @@ AShipModule* AGameModeBattle::SpawnFlyInModule(TSubclassOf<class AShipModule> Mo
 	FRotator Rotation;
 	//Rotation.Yaw = -90.f;
 	Rotation.Yaw = 0.f;
-	Rotation.Pitch = 0;
-	Rotation.Roll = 90.f;
+	Rotation.Pitch = 0.f;
+	Rotation.Roll = 0.f;
 
 	Location = Location - (Direction * 2000); 
 	Location.Y = 0;
