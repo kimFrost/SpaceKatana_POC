@@ -22,6 +22,8 @@ public:
 	// Sets default values for this component's properties
 	UModulePowerComponent();
 
+	//~~ Options variables ~~//
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Module")
 	float StorageCapacity;
 
@@ -30,6 +32,14 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Module")
 	float PowerGenerated;
+
+	//~~ Runtime variables ~~//
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Module")
+	float StoredPower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Module")
+	float SurplusPower;
 	
 
 	UFUNCTION(BlueprintCallable, Category = "Ship")

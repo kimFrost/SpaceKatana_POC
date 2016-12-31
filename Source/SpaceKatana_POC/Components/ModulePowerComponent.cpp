@@ -17,6 +17,8 @@ UModulePowerComponent::UModulePowerComponent()
 	PowerUpkeep = 0.f;
 	PowerGenerated = 0.f;
 
+	StoredPower = 0.f;
+	SurplusPower = 0.f;
 }
 
 
@@ -25,6 +27,23 @@ void UModulePowerComponent::GeneratePower()
 {
 	if (PowerGenerated > 0.f)
 	{
+		if (PowerGenerated + StoredPower > StorageCapacity)
+		{
+			// Store in self
+
+		}
+		else
+		{
+			// Store in self and rest to ship for distribution
+
+
+			// First distribute to upkeeps, then to storage
+
+
+			// Ship distribution system??
+
+		}
+
 		OnPowerGeneration.Broadcast(PowerGenerated);
 	}
 }

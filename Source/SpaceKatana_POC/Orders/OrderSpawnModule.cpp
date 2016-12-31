@@ -49,8 +49,8 @@ void UOrderSpawnModule::SpawnPlaceholderModule()
 		// Create module placeholder
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		
 		FRotator Rotation;
-		//Rotation.Yaw = -90.f;
 		Rotation.Yaw = 0.f;
 		Rotation.Pitch = 0.f;
 		Rotation.Roll = 0.f;
