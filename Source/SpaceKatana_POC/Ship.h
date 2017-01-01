@@ -30,6 +30,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	float Income;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
+	float PowerCache;
+
+
 	// Orders from planning stored in ship?
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	//TArray<FST_Order> Orders;
