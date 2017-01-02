@@ -16,7 +16,8 @@ AShip::AShip()
 	RootModule = nullptr;
 	Funds = 0.f;
 	Income = 0.f;
-
+	PowerAvailable = 0.f;
+	PowerUpkeep = 0.f;
 }
 
 
@@ -274,6 +275,8 @@ void AShip::UpdateConnections()
 /******************** ParseProduction *************************/
 void AShip::ParseProduction()
 {
+	PowerAvailable = 0.f;
+
 	//~~ Loop though all connected modules ~~//
 	for (int32 m = 0; m < ConnectedModules.Num(); m++)
 	{
@@ -286,7 +289,7 @@ void AShip::ParseProduction()
 				UModulePowerComponent* PowerComponent = Cast<UModulePowerComponent>(ModuleComponent);
 				if (PowerComponent)
 				{
-					PowerComponent->GeneratePower();
+					PowerAvailable += PowerComponent->GeneratePower();
 				}
 			}
 		}
@@ -303,7 +306,7 @@ void AShip::ParseStorage()
 		AShipModule* Module = ConnectedModules[m];
 		if (IsValid(Module))
 		{
-
+			
 		}
 	}
 }
@@ -312,13 +315,23 @@ void AShip::ParseStorage()
 /******************** ParseUpkeep *************************/
 void AShip::ParseUpkeep()
 {
+	PowerUpkeep = 0.f;
+
 	//~~ Loop though all connected modules ~~//
 	for (int32 m = 0; m < ConnectedModules.Num(); m++)
 	{
 		AShipModule* Module = ConnectedModules[m];
 		if (IsValid(Module))
 		{
-
+			TArray<UActorComponent*> ModuleComponents = Module->GetComponentsByClass(UModuleComponent::StaticClass());
+			for (auto& ModuleComponent : ModuleComponents)
+			{
+				UModulePowerComponent* PowerComponent = Cast<UModulePowerComponent>(ModuleComponent);
+				if (PowerComponent)
+				{
+					PowerUpkeep += PowerComponent->PowerUpkeep;
+				}
+			}
 		}
 	}
 }

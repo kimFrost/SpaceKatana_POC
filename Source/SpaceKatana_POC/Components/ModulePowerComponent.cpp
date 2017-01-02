@@ -23,8 +23,11 @@ UModulePowerComponent::UModulePowerComponent()
 
 
 
-void UModulePowerComponent::GeneratePower()
+float UModulePowerComponent::GeneratePower()
 {
+	return PowerGenerated;
+
+	/*
 	if (PowerGenerated > 0.f)
 	{
 		if (PowerGenerated + StoredPower > StorageCapacity)
@@ -46,6 +49,7 @@ void UModulePowerComponent::GeneratePower()
 
 		OnPowerGeneration.Broadcast(PowerGenerated);
 	}
+	*/
 }
 
 

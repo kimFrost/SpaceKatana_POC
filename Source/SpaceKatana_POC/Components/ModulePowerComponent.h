@@ -43,7 +43,7 @@ public:
 	
 
 	UFUNCTION(BlueprintCallable, Category = "Ship")
-	void GeneratePower();
+	float GeneratePower();
 
 
 	UPROPERTY(BlueprintAssignable, Category = "Power|Module")
