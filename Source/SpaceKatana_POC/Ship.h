@@ -6,6 +6,11 @@
 #include "ShipModule.h"
 #include "Ship.generated.h"
 
+//~~~~~ Delegates/Event dispatcher ~~~~~//
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnResourcesUpdated);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnResourcesUpdated, AShipModule*, Module);
+
+
 UCLASS()
 class SPACEKATANA_POC_API AShip : public APawn
 {
@@ -63,6 +68,10 @@ public:
 	void ParseUpkeep();
 
 
+	UPROPERTY(BlueprintAssignable, Category = "Order")
+	FOnResourcesUpdated OnResourcesUpdated;
+
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
@@ -72,4 +81,5 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 	
+
 };
