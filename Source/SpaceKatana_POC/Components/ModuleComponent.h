@@ -22,6 +22,17 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Module")
 	AShipModule* Module;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Module")
+	bool bCanToggle;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Module")
+	bool bIsOn;
+
+
+	UFUNCTION(BlueprintCallable, Category = "Order")
+	bool ToggleOn();
+
+
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	

@@ -12,9 +12,16 @@ UModuleComponent::UModuleComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 	Module = nullptr;
-	// ...
+	bCanToggle = true;
+	bIsOn = true;
 }
 
+
+bool UModuleComponent::ToggleOn()
+{
+
+	return bIsOn;
+}
 
 // Called when the game starts
 void UModuleComponent::BeginPlay()
