@@ -12,7 +12,8 @@
 UOrder::UOrder()
 {
 	Buyer = nullptr;
-	Cost = 100.f;
+	PowerCost = 0.f;
+	PRCost = 0.f;
 	bIsResolved = false;
 	bIsCancelled = false;
 	TurnExcTime = 1;

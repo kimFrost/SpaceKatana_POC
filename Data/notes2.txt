@@ -1,0 +1,29 @@
+
+Scapeyard.
+
+
+Cheaper modules but with chance for random module
+
+Module grade states (cheap, moderate, Hi-tech)
+
+
+
+- Production
+- Upkeep
+- Storage
+
+
+- OnProductionUpdated
+- OnResourcesUpdated
+
+
+
+- Move orderQue from gamemode to ship
+- Order - Module activation / Trigger
+- Powergauge
+
+
+- First turn choices
+	- Build/Expand
+	- Position/Move forward for advantage
+	- Shoot/Attack

@@ -9,6 +9,7 @@
 
 //~~~~~ FORWARD DECLATIONS ~~~~~//
 class AShip;
+class AShipModule;
 
 //~~~~~ Delegates/Event dispatcher ~~~~~//
 //DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTimeUpdated, float, Time, float, TimeProgressed);
@@ -31,7 +32,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	AShip* Buyer;
 
-	float Cost;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
+	AShipModule* Module;
+
+	float PowerCost;
+
+	float PRCost;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Order")
 	bool bIsResolved;

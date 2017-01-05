@@ -31,7 +31,7 @@ AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : 
 
 
 /******************** AddOrder_SpawnModule *************************/
-UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Z, FVector Direction, AShip * Buyer)
+UOrderSpawnModule* AGameModeBattle::AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Z, FVector Direction, AShip* Buyer)
 {
 	UOrderSpawnModule* Order = NewObject<UOrderSpawnModule>();
 	if (Order) 

@@ -18,6 +18,7 @@ AShip::AShip()
 	Income = 0.f;
 	PowerAvailable = 0.f;
 	PowerUpkeep = 0.f;
+	PowerMaxStorage = 0.f;
 }
 
 

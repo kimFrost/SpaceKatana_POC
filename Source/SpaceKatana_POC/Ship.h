@@ -4,6 +4,7 @@
 
 #include "GameFramework/Pawn.h"
 #include "ShipModule.h"
+#include "Orders/Order.h"
 #include "Ship.generated.h"
 
 //~~~~~ Delegates/Event dispatcher ~~~~~//
@@ -36,11 +37,16 @@ public:
 	float Income;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
+	float PowerMaxStorage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
 	float PowerAvailable;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
 	float PowerUpkeep;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources")
+	TArray<UOrder*> OrderQue;
 
 	// Orders from planning stored in ship?
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
