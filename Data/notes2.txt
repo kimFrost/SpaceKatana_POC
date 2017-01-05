@@ -27,3 +27,11 @@ Module grade states (cheap, moderate, Hi-tech)
 	- Build/Expand
 	- Position/Move forward for advantage
 	- Shoot/Attack
+	
+	
+	
+Click - add order to ship
+
+
+
+Shot - Windup turn - Shoot step

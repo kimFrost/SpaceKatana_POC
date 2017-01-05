@@ -2,6 +2,9 @@
 
 #include "SpaceKatana_POC.h"
 #include "ShipModule.h"
+#include "GameModeBattle.h"
+#include "Orders/Order.h"
+#include "Orders/OrderSpawnModule.h"
 #include "Components/ModuleComponent.h"
 #include "Components/ModulePowerComponent.h"
 #include "Ship.h"
@@ -63,6 +66,45 @@ AShipModule * AShip::AddModuleOfClass(TSubclassOf<class AShipModule> ModuleClass
 {
 
 	return nullptr;
+}
+
+
+/******************** AddOrder *************************/
+UOrderSpawnModule* AShip::AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Z, FVector Direction)
+{
+	UOrderSpawnModule* SpawnOrder = nullptr;
+	AGameModeBattle* GameMode = Cast<AGameModeBattle>(GetWorld()->GetAuthGameMode());
+	if (GameMode)
+	{
+		SpawnOrder = GameMode->AddOrder_SpawnModule(ModuleClass, X, Z, Direction, this);
+		OrderQue.Add(SpawnOrder);
+	}
+	return SpawnOrder;
+}
+
+
+/******************** ParseOrderQue *************************/
+void AShip::ParseOrderQue()
+{
+	for (auto& Order : OrderQue)
+	{
+		if (IsValid(Order))
+		{
+			if (Order->TurnsLeft <= 1)
+			{
+				Order->ResolveOrder();
+			}
+		}
+	}
+	//~~ Clean array of resolved orders ~~//
+	for (int i = OrderQue.Num() - 1; i >= 0; i--)
+	{
+		UOrder* Order = OrderQue[i];
+		if ((IsValid(Order) && Order->bIsResolved) || !Order)
+		{
+			OrderQue.RemoveAt(i);
+		}
+	}
 }
 
 

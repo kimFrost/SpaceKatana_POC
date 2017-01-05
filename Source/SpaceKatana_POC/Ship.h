@@ -7,6 +7,11 @@
 #include "Orders/Order.h"
 #include "Ship.generated.h"
 
+
+//~~~~~ FORWARD DECLATIONS ~~~~~//
+class UOrderSpawnModule;
+
+
 //~~~~~ Delegates/Event dispatcher ~~~~~//
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnResourcesUpdated);
 //DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnResourcesUpdated, AShipModule*, Module);
@@ -52,11 +57,20 @@ public:
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ship")
 	//TArray<FST_Order> Orders;
 
+
+	//FUNCTIONS
+
 	UFUNCTION(BlueprintCallable, Category = "Ship")
 	AShipModule* AddModule(AShipModule* Module);
 
 	UFUNCTION(BlueprintCallable, Category = "Ship")
 	AShipModule* AddModuleOfClass(TSubclassOf<class AShipModule> ModuleClass, FVector WorldLocation, FRotator WorldRotation);
+
+	UFUNCTION(BlueprintCallable, Category = "Ship")
+	UOrderSpawnModule* AddOrder_SpawnModule(TSubclassOf<class AShipModule> ModuleClass, int X, int Z, FVector Direction);
+
+	UFUNCTION(BlueprintCallable, Category = "Ship")
+	void ParseOrderQue();
 
 	UFUNCTION(BlueprintCallable, Category = "Ship")
 	void UpdateModules();
@@ -74,9 +88,13 @@ public:
 	void ParseUpkeep();
 
 
+	//DELEGATES
+
 	UPROPERTY(BlueprintAssignable, Category = "Order")
 	FOnResourcesUpdated OnResourcesUpdated;
 
+
+	//OVERRIDES
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
