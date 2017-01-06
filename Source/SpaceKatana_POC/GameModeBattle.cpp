@@ -3,6 +3,7 @@
 #include "SpaceKatana_POC.h"
 #include "DataHolder.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "Ship.h"
 #include "ShipModule.h"
 #include "GridTile.h"
@@ -21,6 +22,15 @@ AGameModeBattle::AGameModeBattle(const FObjectInitializer &ObjectInitializer) : 
 	GridTileSize = 100.f;
 	CurrentStep = ETurnStep::Planning;
 	HighestSequence = 0;
+
+	Time = 0.f;
+	PlayRate = 1.f;
+	PlayingLength = 3.f; // Not used
+	PlaningLength = 60.f;
+	TurnTimeLeft = PlaningLength;
+
+	bPlayerOneReady = false;
+	bPlayerTwoReady = false;
 
 	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemBlueprint(TEXT("Blueprint'/Game/SpaceKatana/Blueprints/BP_OrderVisualizer.BP_OrderVisualizer'"));
 	if (ItemBlueprint.Object) {
@@ -214,6 +224,103 @@ ETurnStep AGameModeBattle::ProgressTurnStep()
 }
 
 
+/******************** SetPlayRate *************************/
+void AGameModeBattle::SetPlayRate(float TimeRate, float DilationRate)
+{
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		PlayRate = TimeRate;
+		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), DilationRate);
+		//World->GetWorldSettings()->TimeDilation = 1 / UGameplayStatics::GetGlobalTimeDilation(World);
+		CustomTimeDilation = 1 / UGameplayStatics::GetGlobalTimeDilation(World);
+
+		//FString TheFloatStr = FString::SanitizeFloat(UGameplayStatics::GetGlobalTimeDilation(World));
+		//UE_LOG(YourLog, Warning, TEXT("MyCharacter's Health is %f"), UGameplayStatics::GetGlobalTimeDilation(World));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::SanitizeFloat(UGameplayStatics::GetGlobalTimeDilation(World)));
+
+
+	}
+}
+
+
+/******************** EndTurn *************************/
+void AGameModeBattle::EndTurn(int ShipIndex)
+{
+	if (ShipIndex == 0)
+	{
+		bPlayerOneReady = true;
+	}
+	else if (ShipIndex == 1)
+	{
+		bPlayerTwoReady = true;
+	}
+	if (bPlayerOneReady && bPlayerTwoReady)
+	{
+		TurnTimeLeft = 0.f;
+	}
+}
+
+
+/******************** NewTurn *************************/
+void AGameModeBattle::NewTurn()
+{
+	bPlayerOneReady = false;
+	bPlayerTwoReady = false;
+	HighestSequence = 0;
+
+	for (auto& Order : Orders)
+	{
+		if (IsValid(Order))
+		{
+			Order->TurnsLeft--;
+		}
+	}
+
+	CurrentStep = ETurnStep::Planning;
+	TurnTimeLeft = PlaningLength;
+	//SetPlayRate(1.f, 0.1f); // Outcomment this after testing
+	UpdateAllModules();
+	OnNewTurn.Broadcast();
+}
+
+
+/******************** ProgressTime *************************/
+void AGameModeBattle::ProgressTime(float Amount)
+{
+	Time = Time + Amount;
+	TurnTimeLeft = TurnTimeLeft - Amount;
+	if (TurnTimeLeft <= 0)
+	{
+		ETurnStep NewStep = ProgressTurnStep();
+
+		switch (NewStep)
+		{
+		case ETurnStep::Planning:
+			NewTurn();
+			break;
+		case ETurnStep::Moving:
+			TurnTimeLeft = 1.f;
+			SetPlayRate(1.f, 1.f);
+			break;
+		case ETurnStep::Shooting:
+			TurnTimeLeft = 1.f;
+			break;
+		case ETurnStep::SpawningModules:
+			TurnTimeLeft = 1.f;
+			UpdateOrders(EOrderType::SpawnModule);
+			break;
+		case ETurnStep::Maneuvering:
+			TurnTimeLeft = 2.f;
+			break;
+		}
+
+		OnStepChange.Broadcast(NewStep);
+	}
+	OnTimeUpdated.Broadcast(Time, Amount);
+}
+
+
 //void UKismetProceduralMeshLibrary::ConvertQuadToTriangles(TArray<int32>& Triangles, int32 Vert0, int32 Vert1, int32 Vert2, int32 Vert3)
 
 //struct FST_GridTile& AGameModeBattle::GetGridTile(FVector WorldLocation)
@@ -351,4 +458,30 @@ bool AGameModeBattle::IsValidShipLocation(AShip* Ship, FVector WorldLocation)
 		// Or loop passed array of locations and check 
 	}
 	return Valid;
+}
+
+
+/******************** BeginPlay *************************/
+void AGameModeBattle::BeginPlay()
+{
+	Super::BeginPlay();
+
+	UGameplayStatics::CreatePlayer(GetWorld());
+
+	ConstructGrid();
+
+	FTimerHandle UnusedHandle;
+	GetWorldTimerManager().SetTimer(UnusedHandle, this, &AGameModeBattle::NewTurn, 0.5f, false);
+}
+
+
+/******************** Tick *************************/
+void AGameModeBattle::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (PlayRate > 0.0001)
+	{
+		ProgressTime(DeltaTime * PlayRate);
+	}
 }

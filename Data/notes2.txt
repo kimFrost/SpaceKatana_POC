@@ -29,9 +29,10 @@ Module grade states (cheap, moderate, Hi-tech)
 	- Shoot/Attack
 	
 	
+
 	
-Click - add order to ship
-
-
+() Move orders from gamemode to ship (Have to figure out controls for multiple people first, else how can I know which ships to store them in)
+(DONE) Move time/turn handling to c++
+(DONE) Test that CustomTimeDilation works on gamemode in c++ like in blueprint gamemode
 
 Shot - Windup turn - Shoot step
