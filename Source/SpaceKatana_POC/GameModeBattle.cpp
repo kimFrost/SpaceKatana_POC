@@ -466,7 +466,7 @@ void AGameModeBattle::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UGameplayStatics::CreatePlayer(GetWorld());
+	//UGameplayStatics::CreatePlayer(GetWorld());
 
 	ConstructGrid();
 
