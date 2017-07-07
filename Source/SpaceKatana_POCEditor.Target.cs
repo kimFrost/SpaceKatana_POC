@@ -5,6 +5,18 @@ using System.Collections.Generic;
 
 public class SpaceKatana_POCEditorTarget : TargetRules
 {
+    public SpaceKatana_POCEditorTarget(TargetInfo Target) : base(Target)
+    {
+        Type = TargetType.Editor;
+
+        ExtraModuleNames.AddRange(new string[] { "SpaceKatana_POC" });
+    }
+}
+
+
+/*
+public class SpaceKatana_POCEditorTarget : TargetRules
+{
 	public SpaceKatana_POCEditorTarget(TargetInfo Target)
 	{
 		Type = TargetType.Editor;
@@ -23,3 +35,4 @@ public class SpaceKatana_POCEditorTarget : TargetRules
 		OutExtraModuleNames.AddRange( new string[] { "SpaceKatana_POC" } );
 	}
 }
+*/

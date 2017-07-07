@@ -5,6 +5,17 @@ using System.Collections.Generic;
 
 public class SpaceKatana_POCTarget : TargetRules
 {
+    public SpaceKatana_POCTarget(TargetInfo Target) : base(Target)
+    {
+        Type = TargetType.Game;
+
+        ExtraModuleNames.AddRange(new string[] { "SpaceKatana_POC" });
+    }
+}
+
+/*
+public class SpaceKatana_POCTarget : TargetRules
+{
 	public SpaceKatana_POCTarget(TargetInfo Target)
 	{
 		Type = TargetType.Game;
@@ -23,3 +34,4 @@ public class SpaceKatana_POCTarget : TargetRules
 		OutExtraModuleNames.AddRange( new string[] { "SpaceKatana_POC" } );
 	}
 }
+*/
